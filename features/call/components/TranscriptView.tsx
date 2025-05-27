@@ -1,29 +1,30 @@
-"use client";
+'use client'
 
-import { cn } from "@/lib/utils";
-import { Message, MessageTypeEnum, TranscriptMessage } from "@/types/conversation.type";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react'
+
+import { Message, MessageTypeEnum, TranscriptMessage } from '@/types/conversation.type'
+import { cn } from '@/lib/utils'
 
 interface TranscriptViewProps {
-  messages: Message[];
-  activeTranscript: TranscriptMessage | null;
+  messages: Message[]
+  activeTranscript: TranscriptMessage | null
 }
 
 export function TranscriptView({ messages, activeTranscript }: TranscriptViewProps) {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Auto scroll to bottom when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, activeTranscript]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, activeTranscript])
 
   // Filter out empty messages and those without content/transcript
   const filteredMessages = messages.filter((message) => {
     if (message.type === MessageTypeEnum.TRANSCRIPT) {
-      return message.transcript && message.transcript.trim() !== "";
+      return message.transcript && message.transcript.trim() !== ''
     }
-    return message.content && message.content.trim() !== "";
-  });
+    return message.content && message.content.trim() !== ''
+  })
 
   return (
     <div className="relative w-full rounded-xl border bg-white shadow-sm">
@@ -36,40 +37,18 @@ export function TranscriptView({ messages, activeTranscript }: TranscriptViewPro
 
       <div className="flex flex-col space-y-4 p-4 h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
         {filteredMessages.map((message, index) => (
-          <div
-            key={index}
-            className={cn(
-              "group flex items-start space-x-2 relative",
-              message.role === "user" ? "justify-end" : "justify-start"
-            )}
-          >
-            {message.role === "assistant" && (
+          <div key={index} className={cn('group flex items-start space-x-2 relative', message.role === 'user' ? 'justify-end' : 'justify-start')}>
+            {message.role === 'assistant' && (
               <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
                 <span className="text-sm font-medium text-white">AI</span>
               </div>
             )}
-            <div
-              className={cn(
-                "relative flex flex-col max-w-[80%] space-y-2",
-                message.role === "user" ? "items-end" : "items-start"
-              )}
-            >
-              <div
-                className={cn(
-                  "rounded-2xl px-4 py-2 inline-block break-words",
-                  message.role === "user"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-900"
-                )}
-              >
-                <p className="text-sm">
-                  {message.type === MessageTypeEnum.TRANSCRIPT
-                    ? message.transcript
-                    : message.content}
-                </p>
+            <div className={cn('relative flex flex-col max-w-[80%] space-y-2', message.role === 'user' ? 'items-end' : 'items-start')}>
+              <div className={cn('rounded-2xl px-4 py-2 inline-block break-words', message.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-900')}>
+                <p className="text-sm">{message.type === MessageTypeEnum.TRANSCRIPT ? message.transcript : message.content}</p>
               </div>
             </div>
-            {message.role === "user" && (
+            {message.role === 'user' && (
               <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
                 <span className="text-sm font-medium text-gray-600">You</span>
               </div>
@@ -77,7 +56,7 @@ export function TranscriptView({ messages, activeTranscript }: TranscriptViewPro
           </div>
         ))}
 
-        {activeTranscript && activeTranscript.transcript.trim() !== "" && (
+        {activeTranscript && activeTranscript.transcript.trim() !== '' && (
           <div className="group flex items-start space-x-2 justify-start">
             <div className="h-8 w-8 rounded-full bg-blue-600/50 flex items-center justify-center">
               <span className="text-sm font-medium text-white">AI</span>
@@ -99,5 +78,5 @@ export function TranscriptView({ messages, activeTranscript }: TranscriptViewPro
         <div ref={messagesEndRef} />
       </div>
     </div>
-  );
+  )
 }

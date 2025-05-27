@@ -1,6 +1,6 @@
+import { NextResponse, type NextRequest } from 'next/server'
 import { Database } from '@/database.types'
 import { createServerClient } from '@supabase/ssr'
-import { type NextRequest, NextResponse } from 'next/server'
 
 const authRoutes = ['/auth/sign-in', '/auth/sign-up', '/auth/forgot-password']
 const publicRoutes = ['/v/', '/auth/callback', '/auth/reset-password', '/matches']
@@ -37,7 +37,7 @@ export const updateSession = async (request: NextRequest) => {
 
     // Check if the current route is a public route
     // const isPublicRoute = publicRoutes.includes(requisPublicRouteest.nextUrl.pathname)
-    const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
+    const isPublicRoute = publicRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
 
     if (isPublicRoute) {
       return response

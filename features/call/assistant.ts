@@ -1,4 +1,4 @@
-import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
+import { CreateAssistantDTO } from '@vapi-ai/web/dist/api'
 
 // clientMessages and serverMessages are giving type error
 export const assistant: Omit<CreateAssistantDTO, 'clientMessages' | 'serverMessages'> = {

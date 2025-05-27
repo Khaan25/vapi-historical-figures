@@ -1,7 +1,7 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
-if(!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_URL is not set');
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  throw new Error('NEXT_PUBLIC_SUPABASE_URL is not set')
 }
 
 const nextConfig: NextConfig = {
@@ -19,9 +19,8 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
-
     ],
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

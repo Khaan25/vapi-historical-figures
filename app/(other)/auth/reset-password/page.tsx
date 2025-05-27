@@ -1,10 +1,11 @@
-import { resetPasswordAction } from '@/app/(other)/auth/actions'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import AuthWrapper from '@/features/auth/components/auth-wrapper'
 import { FormMessage, Message } from '@/features/auth/components/form-message'
 import { SubmitButton } from '@/features/auth/components/submit-button'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { resetPasswordAction } from '@/app/(other)/auth/actions'
 
 export default async function ResetPassword({ searchParams }: { searchParams: Message }) {
   return (

@@ -27,10 +27,10 @@ export const commonEditSchema = z.object({
   id: z
     .string()
     .or(z.number())
-    .refine(val => typeof val === 'string' || typeof val === 'number', {
+    .refine((val) => typeof val === 'string' || typeof val === 'number', {
       message: 'ID must be a string or number',
     })
-    .refine(val => Number(val) > 0, { message: 'ID must be greater than 0' }),
+    .refine((val) => Number(val) > 0, { message: 'ID must be greater than 0' }),
 })
 export type CommonEditValues = z.infer<typeof commonEditSchema>
 

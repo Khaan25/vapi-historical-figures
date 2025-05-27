@@ -1,11 +1,12 @@
-import { forgotPasswordAction } from '@/app/(other)/auth/actions'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import Link from 'next/link'
 import AuthWrapper from '@/features/auth/components/auth-wrapper'
 import { FormMessage, Message } from '@/features/auth/components/form-message'
 import { SubmitButton } from '@/features/auth/components/submit-button'
-import Link from 'next/link'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { forgotPasswordAction } from '@/app/(other)/auth/actions'
 
 export default function ForgotPassword({ searchParams }: { searchParams: Message }) {
   return (

@@ -4,10 +4,10 @@ import { MessageParams } from '@/types'
 
 export default async function Page({ searchParams }: { searchParams: MessageParams }) {
   const params = await searchParams
-  
+
   return (
     <AuthWrapper>
-    <SignUpForm searchParams={params} />
-  </AuthWrapper>
+      <SignUpForm searchParams={params} />
+    </AuthWrapper>
   )
 }

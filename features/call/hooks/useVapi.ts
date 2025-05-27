@@ -1,110 +1,107 @@
-"use client";
+'use client'
 
-import { vapi } from "@/lib/vapi";
-import { Message, TranscriptMessage, MessageTypeEnum, TranscriptMessageTypeEnum } from "@/types/conversation.type";
-import { useEffect, useState } from "react";
-import { assistant } from "../assistant";
+import { useEffect, useState } from 'react'
+
+import { Message, MessageTypeEnum, TranscriptMessage, TranscriptMessageTypeEnum } from '@/types/conversation.type'
+import { vapi } from '@/lib/vapi'
+
+import { assistant } from '../assistant'
+
 // import { MessageActionTypeEnum, useMessages } from "./useMessages";
 
 export enum CALL_STATUS {
-  INACTIVE = "inactive",
-  ACTIVE = "active",
-  LOADING = "loading",
+  INACTIVE = 'inactive',
+  ACTIVE = 'active',
+  LOADING = 'loading',
 }
 
 export function useVapi() {
-  const [isSpeechActive, setIsSpeechActive] = useState(false);
-  const [callStatus, setCallStatus] = useState<CALL_STATUS>(
-    CALL_STATUS.INACTIVE
-  );
+  const [isSpeechActive, setIsSpeechActive] = useState(false)
+  const [callStatus, setCallStatus] = useState<CALL_STATUS>(CALL_STATUS.INACTIVE)
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([])
 
-  const [activeTranscript, setActiveTranscript] =
-    useState<TranscriptMessage | null>(null);
+  const [activeTranscript, setActiveTranscript] = useState<TranscriptMessage | null>(null)
 
-  const [audioLevel, setAudioLevel] = useState(0);
+  const [audioLevel, setAudioLevel] = useState(0)
 
   useEffect(() => {
-    const onSpeechStart = () => setIsSpeechActive(true);
+    const onSpeechStart = () => setIsSpeechActive(true)
     const onSpeechEnd = () => {
-      console.log("Speech has ended");
-      setIsSpeechActive(false);
-    };
+      console.log('Speech has ended')
+      setIsSpeechActive(false)
+    }
 
     const onCallStartHandler = () => {
-      console.log("Call has started");
-      setCallStatus(CALL_STATUS.ACTIVE);
-    };
+      console.log('Call has started')
+      setCallStatus(CALL_STATUS.ACTIVE)
+    }
 
     const onCallEnd = () => {
-      console.log("Call has stopped");
-      setCallStatus(CALL_STATUS.INACTIVE);
-    };
+      console.log('Call has stopped')
+      setCallStatus(CALL_STATUS.INACTIVE)
+    }
 
     const onVolumeLevel = (volume: number) => {
-      setAudioLevel(volume);
-    };
+      setAudioLevel(volume)
+    }
 
     const onMessageUpdate = (message: Message) => {
       // console.log('message', message);
-      if (
-        message.type === MessageTypeEnum.TRANSCRIPT &&
-        message.transcriptType === TranscriptMessageTypeEnum.PARTIAL
-      ) {
-        setActiveTranscript(message);
+      if (message.type === MessageTypeEnum.TRANSCRIPT && message.transcriptType === TranscriptMessageTypeEnum.PARTIAL) {
+        setActiveTranscript(message)
       } else {
-        setMessages((prev) => [...prev, message]);
-        setActiveTranscript(null);
+        setMessages((prev) => [...prev, message])
+        setActiveTranscript(null)
       }
-    };
+    }
 
     const onError = (e: any) => {
-      setCallStatus(CALL_STATUS.INACTIVE);
-      console.error(e);
-    };
+      setCallStatus(CALL_STATUS.INACTIVE)
+      console.error(e)
+    }
 
-    vapi.on("speech-start", onSpeechStart);
-    vapi.on("speech-end", onSpeechEnd);
-    vapi.on("call-start", onCallStartHandler);
-    vapi.on("call-end", onCallEnd);
-    vapi.on("volume-level", onVolumeLevel);
-    vapi.on("message", onMessageUpdate);
-    vapi.on("error", onError);
+    vapi.on('speech-start', onSpeechStart)
+    vapi.on('speech-end', onSpeechEnd)
+    vapi.on('call-start', onCallStartHandler)
+    vapi.on('call-end', onCallEnd)
+    vapi.on('volume-level', onVolumeLevel)
+    vapi.on('message', onMessageUpdate)
+    vapi.on('error', onError)
 
     return () => {
-      vapi.off("speech-start", onSpeechStart);
-      vapi.off("speech-end", onSpeechEnd);
-      vapi.off("call-start", onCallStartHandler);
-      vapi.off("call-end", onCallEnd);
-      vapi.off("volume-level", onVolumeLevel);
-      vapi.off("message", onMessageUpdate);
-      vapi.off("error", onError);
-    };
+      vapi.off('speech-start', onSpeechStart)
+      vapi.off('speech-end', onSpeechEnd)
+      vapi.off('call-start', onCallStartHandler)
+      vapi.off('call-end', onCallEnd)
+      vapi.off('volume-level', onVolumeLevel)
+      vapi.off('message', onMessageUpdate)
+      vapi.off('error', onError)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const start = async () => {
-    setCallStatus(CALL_STATUS.LOADING);
-    const response = vapi.start(assistant);
+    setCallStatus(CALL_STATUS.LOADING)
+    const response = vapi.start(assistant)
 
     response.then((res) => {
-      console.log("call", res);
-    });
-  };
+      console.log('call', res)
+    })
+  }
 
   const stop = () => {
-    setCallStatus(CALL_STATUS.LOADING);
-    vapi.stop();
-  };
+    setCallStatus(CALL_STATUS.LOADING)
+    vapi.stop()
+  }
 
   const toggleCall = () => {
     if (callStatus == CALL_STATUS.ACTIVE) {
-      stop();
+      stop()
     } else {
-      start();
+      start()
     }
-  };
+  }
 
   return {
     isSpeechActive,
@@ -115,5 +112,5 @@ export function useVapi() {
     start,
     stop,
     toggleCall,
-  };
+  }
 }
