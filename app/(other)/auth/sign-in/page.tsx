@@ -1,16 +1,19 @@
 import AuthWrapper from '@/features/auth/components/auth-wrapper'
-import { Message } from '@/features/auth/components/form-message'
 import { SignInForm } from '@/features/auth/components/forms/sign-in-form'
+import { MessageParams } from '@/types'
+
+
 
 export type SignInPageProps = {
-  searchParams: Message & { callbackUrl?: string }
+  searchParams: Promise<MessageParams>
 }
 
-export default function Page({ searchParams }: SignInPageProps) {
+export default async function Page({ searchParams }: SignInPageProps) {
+  const params = await searchParams
 
   return (
     <AuthWrapper>
-      <SignInForm searchParams={searchParams } />
+      <SignInForm searchParams={params} />
     </AuthWrapper>
   )
 }

@@ -1,20 +1,15 @@
-import React from 'react'
 
 import { signInAction } from '@/app/(other)/auth/actions'
-import { SignInPageProps } from '@/app/(other)/auth/sign-in/page'
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { cn } from "@/lib/utils"
-import Image from 'next/image'
 import Link from 'next/link'
 import { FormMessage } from '../form-message'
 import SignInGoogleBtn from '../sign-in-google-btn'
 import { SubmitButton } from '../submit-button'
 import { SignInUpLayout } from './sign-in-up-layout'
+import { MessageParams } from '@/types'
 
-
-export const SignInForm = ({ searchParams }: SignInPageProps) => {
+export const SignInForm = ({ searchParams }: { searchParams: MessageParams }) => {
   const signInActionWithCallbackUrl = signInAction.bind(null, searchParams.callbackUrl ?? undefined)
 
   return (

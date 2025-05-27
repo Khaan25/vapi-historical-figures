@@ -1,17 +1,15 @@
 
 import { signInAction } from '@/app/(other)/auth/actions'
-import { SignInPageProps } from '@/app/(other)/auth/sign-in/page'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { MessageParams } from '@/types'
 import Link from 'next/link'
 import { FormMessage } from '../form-message'
 import SignInGoogleBtn from '../sign-in-google-btn'
 import { SubmitButton } from '../submit-button'
 import { SignInUpLayout } from './sign-in-up-layout'
 
-export type SignUpFormProps = SignInPageProps
-
-export const SignUpForm = ({ searchParams }: SignUpFormProps) => {
+export const SignUpForm = ({ searchParams }: { searchParams: MessageParams }) => {
   const signInActionWithCallbackUrl = signInAction.bind(null, searchParams.callbackUrl ?? undefined)
 
   return (
