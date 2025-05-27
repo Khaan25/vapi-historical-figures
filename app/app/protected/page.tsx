@@ -2,10 +2,10 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { InfoIcon } from 'lucide-react'
 
-import Screen from '@/components/common/screen'
+import { Screen } from '@/components/common/screen'
 
 export default async function ProtectedPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const {
     data: { user },

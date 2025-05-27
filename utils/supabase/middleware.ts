@@ -3,7 +3,7 @@ import { Database } from '@/database.types'
 import { createServerClient } from '@supabase/ssr'
 
 const authRoutes = ['/auth/sign-in', '/auth/sign-up', '/auth/forgot-password']
-const publicRoutes = ['/v/', '/auth/callback', '/auth/reset-password', '/matches']
+const publicRoutes = ['/', '/auth/callback', '/auth/reset-password']
 
 export const updateSession = async (request: NextRequest) => {
   try {
