@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { HistoricalFigureCard } from '@/features/dashboard/components/historical-figure-card'
 import { HistoricalFigure, ViewMode } from '@/types'
 
-import { HistoricalFigureCard } from '@/components/ui/historical-figure-card'
 import { SearchBar } from '@/components/ui/search-bar'
 import { ViewToggle } from '@/components/ui/view-toggle'
 

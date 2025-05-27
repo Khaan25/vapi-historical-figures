@@ -1,13 +1,13 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { HistoricalFigure } from '@/types'
 import { Star } from 'lucide-react'
 
-import { Badge } from './badge'
-import { Button } from './button'
-import { Card, CardContent } from './card'
-import Image from 'next/image'
+import { Badge } from '../../../components/ui/badge'
+import { Button } from '../../../components/ui/button'
+import { Card, CardContent } from '../../../components/ui/card'
 
 interface HistoricalFigureCardProps {
   figure: HistoricalFigure
@@ -15,10 +15,10 @@ interface HistoricalFigureCardProps {
 }
 
 export function HistoricalFigureCard({ figure, viewMode }: HistoricalFigureCardProps) {
-  const initials = figure.name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
+  // const initials = figure.name
+  //   .split(' ')
+  //   .map((n) => n[0])
+  //   .join('')
 
   if (viewMode === 'list') {
     return (

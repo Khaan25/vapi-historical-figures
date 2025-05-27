@@ -53,19 +53,22 @@ export function Hero() {
                     ...transitionVariants,
                   }}
                 >
-                  <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16">Build and Ship 10x faster with NS</h1>
-                  <p className="mt-8 max-w-2xl text-pretty text-lg">Tailwindcss highly customizable components for building modern websites and applications that look and feel the way you mean it.</p>
+                  <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16">Converse with History&apos;s Greatest Minds</h1>
+                  <p className="mt-8 max-w-2xl text-pretty text-lg">
+                    Experience immersive conversations with historical figures through AI-powered voice interactions. Learn directly from the past in a way that&apos;s engaging, educational, and
+                    revolutionary.
+                  </p>
                   <div className="mt-12 flex items-center gap-2">
                     <div key={1} className="bg-foreground/10 rounded-[14px] border p-0.5">
                       <Button asChild size="lg" className="rounded-xl px-5 text-base">
-                        <Link href="#link">
-                          <span className="text-nowrap">Start Building</span>
+                        <Link href="/app">
+                          <span className="text-nowrap">Start Talking</span>
                         </Link>
                       </Button>
                     </div>
                     <Button key={2} asChild size="lg" variant="ghost" className="h-[42px] rounded-xl px-5 text-base">
-                      <Link href="#link">
-                        <span className="text-nowrap">Request a demo</span>
+                      <Link href="#features">
+                        <span className="text-nowrap">View Features</span>
                       </Link>
                     </Button>
                   </div>
@@ -152,10 +155,10 @@ export function Hero() {
 }
 
 const menuItems = [
-  { name: 'Features', href: '#link' },
-  { name: 'Solution', href: '#link' },
-  { name: 'Pricing', href: '#link' },
-  { name: 'About', href: '#link' },
+  { name: 'Features', href: '#features' },
+  { name: 'Historical Figures', href: '#figures' },
+  { name: 'About', href: '#about' },
+  { name: 'Pricing', href: '#pricing' },
 ]
 
 export const HeroHeader = () => {
