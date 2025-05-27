@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Project Overview: "Echoes of the Past"
 
-## Getting Started
+Description: An AI-powered voice assistant that brings historical figures to life, allowing users to engage in interactive conversations for educational and immersive experiences.
 
-First, run the development server:
+Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Voice Interaction with Subtitles: Real-time voice input and output with synchronized subtitles.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Historical Figure Profiles: Detailed profiles for each historical figure, including background, achievements, and personality traits.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Dynamic Prompting: Contextual prompts tailored to each historical figure's persona.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+User Authentication: Google OAuth integration for personalized experiences.
 
-## Learn More
+Rate Limiting: Prevent abuse and manage API usage effectively.
 
-To learn more about Next.js, take a look at the following resources:
+Database Management: Store user interactions and preferences.Mobisoft Infotech+1Medium+1
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Responsive UI: Mobile-first design with intuitive navigation.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🛠️ Technical Stack
 
-## Deploy on Vercel
+Frontend: Next.js, Tailwind CSS, TypeScript
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Backend: Supabase (Database, Authentication)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Voice Interaction: Vapi AI SDK
+
+Authentication: Google OAuth
+
+Deployment: Vercel
