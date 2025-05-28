@@ -1,31 +1,59 @@
-Project Overview: "Echoes of the Past"
+# Echoes of the Past
 
-Description: An AI-powered voice assistant that brings historical figures to life, allowing users to engage in interactive conversations for educational and immersive experiences.
+An AI-powered platform that brings historical figures to life through interactive voice conversations, creating immersive educational experiences.
 
-Key Features
+## Overview
 
-Voice Interaction with Subtitles: Real-time voice input and output with synchronized subtitles.
+Echoes of the Past uses cutting-edge AI technology to enable users to engage in meaningful dialogues with historical personalities. The platform combines voice interaction, historical accuracy, and modern technology to create a unique learning experience.
 
-Historical Figure Profiles: Detailed profiles for each historical figure, including background, achievements, and personality traits.
+## Core Technologies
 
-Dynamic Prompting: Contextual prompts tailored to each historical figure's persona.
+- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
+- **Backend**: Supabase (Database & Auth)
+- **Voice AI**: Vapi AI SDK
+- **Authentication**: Google OAuth
+- **Deployment**: Vercel
 
-User Authentication: Google OAuth integration for personalized experiences.
+## Architecture
 
-Rate Limiting: Prevent abuse and manage API usage effectively.
+### Frontend Components
 
-Database Management: Store user interactions and preferences.Mobisoft Infotech+1Medium+1
+- Modern responsive UI with mobile-first design
+- Real-time voice processing with subtitle synchronization
+- Dynamic conversation interface
+- Historical figure profile displays
 
-Responsive UI: Mobile-first design with intuitive navigation.
+### Backend Services
 
-🛠️ Technical Stack
+- Supabase integration for data persistence
+- Rate limiting and API usage monitoring
+- User session management
+- Conversation history tracking
 
-Frontend: Next.js, Tailwind CSS, TypeScript
+### Security Features
 
-Backend: Supabase (Database, Authentication)
+- OAuth 2.0 authentication flow
+- API request validation
+- Rate limiting protection
+- Secure data storage
 
-Voice Interaction: Vapi AI SDK
+## Development
 
-Authentication: Google OAuth
+```bash
+# Install dependencies
+npm install
 
-Deployment: Vercel
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## Contributing
+
+Please read our contributing guidelines before submitting pull requests.
+
+## License
+
+[License Type] - See LICENSE file for details

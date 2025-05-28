@@ -1,52 +1,52 @@
-import { ArrowLeftRight, Cloud, DollarSign, Heart, HelpCircle, Settings, Terminal, Users } from 'lucide-react'
+import { Brain, History, MessageSquare, Mic, PersonStanding, Shield, Sparkles, Users } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
 export default function Features() {
   const features = [
     {
-      title: 'Built for developers',
-      description: 'Built for engineers, developers, dreamers, thinkers and doers.',
-      icon: <Terminal size={24} />,
+      title: 'Interactive Voice Chat',
+      description: 'Have real conversations with historical figures through advanced AI voice technology.',
+      icon: <Mic size={24} />,
     },
     {
-      title: 'Ease of use',
-      description: "It's as easy as using an Apple, and as expensive as buying one.",
-      icon: <ArrowLeftRight size={24} />,
+      title: 'Historical Accuracy',
+      description: 'Engage with historically accurate personas based on extensive research and documentation.',
+      icon: <History size={24} />,
     },
     {
-      title: 'Pricing like no other',
-      description: 'Our prices are best in the market. No cap, no lock, no credit card required.',
-      icon: <DollarSign size={24} />,
+      title: 'Dynamic Conversations',
+      description: "Each interaction is unique, with contextual responses that match the historical figure's personality.",
+      icon: <MessageSquare size={24} />,
     },
     {
-      title: '100% Uptime guarantee',
-      description: 'We just cannot be taken down by anyone.',
-      icon: <Cloud size={24} />,
+      title: 'Educational Experience',
+      description: 'Learn history directly from the source through immersive conversations.',
+      icon: <Brain size={24} />,
     },
     {
-      title: 'Multi-tenant Architecture',
-      description: 'You can simply share passwords instead of buying new seats',
+      title: 'Multiple Personalities',
+      description: 'Choose from a diverse range of historical figures across different eras and fields.',
       icon: <Users size={24} />,
     },
     {
-      title: '24/7 Customer Support',
-      description: 'We are available a 100% of the time. Atleast our AI Agents are.',
-      icon: <HelpCircle size={24} />,
+      title: 'Real-time Subtitles',
+      description: 'Follow conversations easily with synchronized subtitles for better comprehension.',
+      icon: <Sparkles size={24} />,
     },
     {
-      title: 'Money back guarantee',
-      description: 'If you donot like EveryAI, we will convince you to like us.',
-      icon: <Settings size={24} />,
+      title: 'Secure Platform',
+      description: 'Your conversations are protected with enterprise-grade security and authentication.',
+      icon: <Shield size={24} />,
     },
     {
-      title: 'And everything else',
-      description: 'I just ran out of copy ideas. Accept my sincere apologies',
-      icon: <Heart size={24} />,
+      title: 'Personalized Experience',
+      description: 'Track your interactions and build relationships with historical figures over time.',
+      icon: <PersonStanding size={24} />,
     },
   ]
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  relative z-10 py-10 max-w-7xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
       {features.map((feature, index) => (
         <Feature key={feature.title} {...feature} index={index} />
       ))}
