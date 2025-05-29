@@ -124,7 +124,7 @@ export const CharactersList = () => {
   }, [characters, selectedCategory])
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 py-8">
+    <div id="historical-figures" className="w-full max-w-7xl mt-32 mx-auto space-y-8 py-8">
       {/* Categories */}
       <ScrollArea className="w-full whitespace-nowrap">
         <div className="flex w-max space-x-4 px-4">

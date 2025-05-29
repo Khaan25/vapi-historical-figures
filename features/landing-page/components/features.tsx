@@ -2,51 +2,52 @@ import { Brain, History, MessageSquare, Mic, PersonStanding, Shield, Sparkles, U
 
 import { cn } from '@/lib/utils'
 
+const features = [
+  {
+    title: 'Interactive Voice Chat',
+    description: 'Have real conversations with historical figures through advanced AI voice technology.',
+    icon: <Mic size={24} />,
+  },
+  {
+    title: 'Historical Accuracy',
+    description: 'Engage with historically accurate personas based on extensive research and documentation.',
+    icon: <History size={24} />,
+  },
+  {
+    title: 'Dynamic Conversations',
+    description: "Each interaction is unique, with contextual responses that match the historical figure's personality.",
+    icon: <MessageSquare size={24} />,
+  },
+  {
+    title: 'Educational Experience',
+    description: 'Learn history directly from the source through immersive conversations.',
+    icon: <Brain size={24} />,
+  },
+  {
+    title: 'Multiple Personalities',
+    description: 'Choose from a diverse range of historical figures across different eras and fields.',
+    icon: <Users size={24} />,
+  },
+  {
+    title: 'Real-time Subtitles',
+    description: 'Follow conversations easily with synchronized subtitles for better comprehension.',
+    icon: <Sparkles size={24} />,
+  },
+  {
+    title: 'Secure Platform',
+    description: 'Your conversations are protected with enterprise-grade security and authentication.',
+    icon: <Shield size={24} />,
+  },
+  {
+    title: 'Personalized Experience',
+    description: 'Track your interactions and build relationships with historical figures over time.',
+    icon: <PersonStanding size={24} />,
+  },
+]
+
 export default function Features() {
-  const features = [
-    {
-      title: 'Interactive Voice Chat',
-      description: 'Have real conversations with historical figures through advanced AI voice technology.',
-      icon: <Mic size={24} />,
-    },
-    {
-      title: 'Historical Accuracy',
-      description: 'Engage with historically accurate personas based on extensive research and documentation.',
-      icon: <History size={24} />,
-    },
-    {
-      title: 'Dynamic Conversations',
-      description: "Each interaction is unique, with contextual responses that match the historical figure's personality.",
-      icon: <MessageSquare size={24} />,
-    },
-    {
-      title: 'Educational Experience',
-      description: 'Learn history directly from the source through immersive conversations.',
-      icon: <Brain size={24} />,
-    },
-    {
-      title: 'Multiple Personalities',
-      description: 'Choose from a diverse range of historical figures across different eras and fields.',
-      icon: <Users size={24} />,
-    },
-    {
-      title: 'Real-time Subtitles',
-      description: 'Follow conversations easily with synchronized subtitles for better comprehension.',
-      icon: <Sparkles size={24} />,
-    },
-    {
-      title: 'Secure Platform',
-      description: 'Your conversations are protected with enterprise-grade security and authentication.',
-      icon: <Shield size={24} />,
-    },
-    {
-      title: 'Personalized Experience',
-      description: 'Track your interactions and build relationships with historical figures over time.',
-      icon: <PersonStanding size={24} />,
-    },
-  ]
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
+    <div id="features" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
       {features.map((feature, index) => (
         <Feature key={feature.title} {...feature} index={index} />
       ))}
