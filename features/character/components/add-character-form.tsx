@@ -1,18 +1,16 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { characterSchema } from '@/schema'
+import { CharacterFormValues, characterSchema } from '@/schema'
 import { categories } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { StorageError } from '@supabase/storage-js'
 import { format } from 'date-fns'
 import { CalendarIcon, Info, Sparkles } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { z } from 'zod'
 
-import { EMPTY_STRING } from '@/config/constants'
+import { EMPTY_URL } from '@/config/constants'
 import { uploadImage } from '@/lib/image'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -26,15 +24,15 @@ import { Textarea } from '@/components/ui/textarea'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import { addCharacter, updateCharacterImage } from '../actions'
+import { useWikiData } from '../hooks/use-wiki-data'
 import { NotableWorksDialog } from './notable-works-dialog'
 
 export function AddCharacterForm() {
-  const [isWikipediaLoading, setIsWikipediaLoading] = useState(false)
-  const [wikipediaError, setWikipediaError] = useState<string | null>(null)
   const [isNotableWorksDialogOpen, setIsNotableWorksDialogOpen] = useState(false)
   const [availableNotableWorks, setAvailableNotableWorks] = useState<string[]>([])
+  const { data: wikiData, isLoading: isWikipediaLoading, error: wikipediaError, fetchData: fetchWikipediaData } = useWikiData()
 
-  const form = useForm<z.infer<typeof characterSchema>>({
+  const form = useForm<CharacterFormValues>({
     resolver: zodResolver(characterSchema),
     defaultValues: {
       name: '',
@@ -48,26 +46,33 @@ export function AddCharacterForm() {
     },
   })
 
-  const { isSubmitting } = form.formState
+  const { errors, isSubmitting } = form.formState
+  console.log('errors :', errors)
 
-  const onDropFile = useCallback(async (file: File) => {
-    if (isSubmitting) return { status: 'error' as const, error: 'Form is submitting' }
+  const onDropFile = useCallback(
+    async (file: File) => {
+      if (isSubmitting) return { status: 'error' as const, error: 'Form is submitting' }
 
-    try {
-      // Create a temporary URL for preview
-      const previewUrl = URL.createObjectURL(file)
-      return {
-        status: 'success' as const,
-        result: previewUrl,
+      try {
+        // Create a temporary URL for preview
+        const previewUrl = URL.createObjectURL(file)
+
+        form.setValue('imageUrl', previewUrl)
+
+        return {
+          status: 'success' as const,
+          result: previewUrl,
+        }
+      } catch (error) {
+        console.error('Error creating preview URL:', error)
+        return {
+          status: 'error' as const,
+          error: 'Failed to create image preview',
+        }
       }
-    } catch (error) {
-      console.error('Error creating preview URL:', error)
-      return {
-        status: 'error' as const,
-        error: 'Failed to create image preview',
-      }
-    }
-  }, [])
+    },
+    [isSubmitting]
+  )
 
   const dropzone = useDropzone({
     onDropFile,
@@ -88,115 +93,51 @@ export function AddCharacterForm() {
   const avatarSrc = dropzone.fileStatuses[0]?.result
   const isPending = dropzone.fileStatuses[0]?.status === 'pending'
 
-  const fetchWikipediaData = async (name: string) => {
-    if (!name) return
+  // Effect to update form when wiki data changes
+  useEffect(() => {
+    if (wikiData) {
+      form.setValue('name', wikiData.name)
+      form.setValue('bio', wikiData.bio)
+      if (wikiData.shortDesc) form.setValue('description', wikiData.shortDesc)
+      if (wikiData.dateOfBirth) form.setValue('dateOfBirth', wikiData.dateOfBirth)
+      if (wikiData.dateOfDeath) form.setValue('dateOfDeath', wikiData.dateOfDeath)
 
-    setIsWikipediaLoading(true)
-    setWikipediaError(null)
-
-    try {
-      // Step 1: Get Wikipedia page data
-      const wikiResp = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(name)}&prop=pageprops|extracts|pageimages|description|categories&explaintext=true&pithumbsize=500&format=json&exsectionformat=plain&origin=*`
-      )
-      const wikiData = await wikiResp.json()
-      const pages = wikiData.query.pages
-      const page = Object.values(pages)[0] as {
-        pageid: number
-        title: string
-        extract: string
-        description?: string
-        pageprops: {
-          wikibase_item: string
-          'wikibase-shortdesc'?: string
-        }
-        thumbnail?: {
-          source: string
-        }
-      }
-
-      if (!page || page.pageid === -1) {
-        throw new Error('No Wikipedia article found for this name')
-      }
-
-      const shortDesc = page.description || page.pageprops?.['wikibase-shortdesc']
-      const wikidataId = page.pageprops?.wikibase_item
-      if (!wikidataId) {
-        throw new Error('No Wikidata ID found for this article')
-      }
-
-      // Step 2: Fetch Wikidata entity data
-      const wdResp = await fetch(`https://www.wikidata.org/wiki/Special:EntityData/${wikidataId}.json`)
-      const wdData = await wdResp.json()
-      const entity = wdData.entities[wikidataId]
-      const claims = entity.claims
-
-      // Helper: extract date string from Wikidata time format
-      function getDate(prop: string) {
-        if (!claims[prop]) return null
-        const timeStr = claims[prop][0].mainsnak.datavalue.value.time
-        return new Date(timeStr.slice(1, 11)) // Convert "YYYY-MM-DD" to Date
-      }
-
-      // Helper: get notable works labels
-      async function getNotableWorksLabels() {
-        if (!claims.P800) return []
-        const workIds = claims.P800.map((w: { mainsnak: { datavalue: { value: { id: string } } } }) => w.mainsnak.datavalue.value.id)
-        if (workIds.length === 0) return []
-
-        // Fetch labels for all notable works in one request
-        const idsStr = workIds.join('|')
-        const labelsResp = await fetch(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${idsStr}&props=labels&languages=en&format=json&origin=*`)
-        const labelsData = await labelsResp.json()
-        return workIds.map((id: string) => labelsData.entities[id]?.labels?.en?.value).filter(Boolean)
-      }
-
-      const dateOfBirth = getDate('P569')
-      const dateOfDeath = getDate('P570')
-      const notableWorks = await getNotableWorksLabels()
-      const imageUrl = page.thumbnail?.source
-
-      // Update form with all the fetched data
-      form.setValue('name', page.title)
-      form.setValue('bio', page.extract)
-      if (shortDesc) form.setValue('description', shortDesc)
-      if (dateOfBirth) form.setValue('dateOfBirth', dateOfBirth)
-      if (dateOfDeath) form.setValue('dateOfDeath', dateOfDeath)
-
-      // Store notable works and open dialog if there are any
-      if (notableWorks.length > 0) {
-        setAvailableNotableWorks(notableWorks)
+      // Handle notable works
+      if (wikiData.notableWorks.length > 0) {
+        setAvailableNotableWorks(wikiData.notableWorks)
         setIsNotableWorksDialogOpen(true)
       }
 
-      if (imageUrl) {
-        const response = await fetch(imageUrl)
-        const blob = await response.blob()
-        const filename = `${name.replace(/\s+/g, '_')}.jpg`
-        const file = new File([blob], filename, { type: blob.type })
-
-        // Automatically download the image
-        const downloadUrl = URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = downloadUrl
-        link.download = filename
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        URL.revokeObjectURL(downloadUrl)
-
-        onDropFile(file)
-
-        toast.success('Bio, description, dates and image updated from Wikipedia and Wikidata')
-      } else {
-        toast.success('Bio, description and dates updated from Wikipedia and Wikidata')
+      // Handle image
+      if (wikiData.imageUrl) {
+        handleWikipediaImage(wikiData.imageUrl, wikiData.name)
       }
+
+      toast.success(wikiData.imageUrl ? `Please upload the downloaded image of ${wikiData.name}` : 'Bio, description and dates updated from Wikipedia and Wikidata')
+    }
+  }, [wikiData, form])
+
+  const handleWikipediaImage = async (imageUrl: string, name: string) => {
+    try {
+      const response = await fetch(imageUrl)
+      const blob = await response.blob()
+      const filename = `${name.replace(/\s+/g, '_')}.jpg`
+      const file = new File([blob], filename, { type: blob.type })
+
+      // Automatically download the image
+      const downloadUrl = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(downloadUrl)
+
+      onDropFile(file)
     } catch (error) {
-      console.error('Data fetch error:', error)
-      setWikipediaError(error instanceof Error ? error.message : 'Failed to fetch data')
-      toast.error(error instanceof Error ? error.message : 'Failed to fetch data')
-    } finally {
-      setIsWikipediaLoading(false)
+      console.error('Error handling Wikipedia image:', error)
+      toast.error('Failed to process Wikipedia image')
     }
   }
 
@@ -204,27 +145,35 @@ export function AddCharacterForm() {
     form.setValue('notableWork', selectedWorks.join(', '))
   }
 
-  async function onSubmit(data: z.infer<typeof characterSchema>) {
+  async function onSubmit(data: CharacterFormValues) {
     try {
-      let imageUrl: { data: string | null; error: StorageError | null } = { data: null, error: null }
+      const characterId = await addCharacter({ ...data, imageUrl: EMPTY_URL })
 
-      if (avatarFile) {
-        imageUrl = await uploadImage({ image: avatarFile, id: data.name })
-
-        if (imageUrl.error) {
-          toast.error('Failed to upload image. Please try again.')
-          return
-        }
+      if (!avatarFile) {
+        console.error('No avatar file')
+        return
       }
 
-      const characterId = await addCharacter({ ...data, imageUrl: EMPTY_STRING })
+      const imageUrl = await uploadImage({ image: avatarFile, id: characterId })
 
-      if (imageUrl.data) {
-        await updateCharacterImage(characterId, imageUrl.data)
+      if (imageUrl.error) {
+        toast.error('Failed to upload image. Please try again.')
+        return
       }
+
+      if (!imageUrl.data) {
+        console.error('Image URL is null')
+        return
+      }
+
+      await updateCharacterImage(characterId, imageUrl.data)
 
       toast.success('Historical figure added successfully!')
       form.reset()
+      form.setValue('category', '')
+      form.setValue('dateOfBirth', new Date())
+      form.setValue('dateOfDeath', new Date())
+
       // Clean up any object URLs to prevent memory leaks
       if (avatarSrc) {
         URL.revokeObjectURL(avatarSrc as string)
@@ -386,7 +335,7 @@ export function AddCharacterForm() {
                   <Sparkles className="h-4 w-4" />
                 </Button>
               </div>
-              <FormDescription>A brief bio (max 2000 characters)</FormDescription>
+              <FormDescription>A brief bio (max 15000 characters)</FormDescription>
               <FormMessage />
             </FormItem>
           )}

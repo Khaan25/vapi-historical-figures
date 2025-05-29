@@ -34,7 +34,12 @@ export function NotableWorksDialog({ isOpen, onClose, notableWorks, onSave }: No
         </DialogHeader>
         <div className="flex flex-wrap gap-2 py-4">
           {notableWorks.map((work) => (
-            <Badge key={work} variant={selectedWorks.includes(work) ? 'default' : 'outline'} className="cursor-pointer hover:bg-primary/90 transition-colors" onClick={() => handleToggleWork(work)}>
+            <Badge
+              key={work}
+              variant={selectedWorks.includes(work) ? 'default' : 'outline'}
+              className="cursor-pointer hover:bg-primary/90 hover:text-white transition-colors"
+              onClick={() => handleToggleWork(work)}
+            >
               {work}
             </Badge>
           ))}
