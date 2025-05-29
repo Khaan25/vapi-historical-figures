@@ -3,7 +3,7 @@ import { NavMenu } from '@/features/sidebar/components/nav-menu'
 import { NavUser } from '@/features/sidebar/components/nav-user'
 import { createClient } from '@/utils/supabase/server'
 
-import { Sidebar, SidebarContent, SidebarFooter, SidebarRail } from '@/components/ui/sidebar'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenuButton, SidebarRail } from '@/components/ui/sidebar'
 
 export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const supabase = await createClient()
@@ -13,6 +13,12 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
 
   return (
     <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">EP</div>
+          <span className="font-semibold leading-none">Echoes of the Past</span>
+        </SidebarMenuButton>
+      </SidebarHeader>
       <SidebarContent>
         <NavMenu />
 
