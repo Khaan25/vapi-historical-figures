@@ -21,8 +21,8 @@ export type Editable<T> = T & CommonEditValues
 
 export const characterSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  imageUrl: z.string().url({ message: 'Please enter a valid URL for the image.' }).optional(),
-  category: z.enum(Object.values(CATEGORIES) as [string, ...string[]], { required_error: 'Please select a category.' }),
+  imageUrl: z.string().url({ message: 'Please enter a valid URL for the image.' }),
+  category: z.enum(Object.values(CATEGORIES) as [string, ...string[]], { invalid_type_error: 'Please select a category from the list.', required_error: 'Please select a category.' }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }).max(200, { message: 'Description must not exceed 200 characters.' }),
   bio: z.string().min(500, { message: 'Bio must be at least 500 characters.' }),
   // .max(15_000, { message: 'Bio must not exceed 15000 characters.' }),

@@ -174,6 +174,11 @@ export function AddCharacterForm() {
       form.setValue('dateOfBirth', new Date())
       form.setValue('dateOfDeath', new Date())
 
+      // Clear dropzone state by removing all files
+      for (const fileStatus of dropzone.fileStatuses) {
+        await dropzone.onRemoveFile(fileStatus.id)
+      }
+
       // Clean up any object URLs to prevent memory leaks
       if (avatarSrc) {
         URL.revokeObjectURL(avatarSrc as string)
