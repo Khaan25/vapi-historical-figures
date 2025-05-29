@@ -1,32 +1,25 @@
 import { CALL_STATUS, useVapi } from '@/features/call/hooks/useVapi'
-import { Loader2, Mic, Square } from 'lucide-react'
+import { Loader2, Phone, PhoneOff } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
-const AssistantButton = ({ toggleCall, callStatus, audioLevel = 0 }: Partial<ReturnType<typeof useVapi>>) => {
-  const color = callStatus === CALL_STATUS.ACTIVE ? 'red' : callStatus === CALL_STATUS.LOADING ? 'orange' : 'green'
-  const buttonStyle = {
-    borderRadius: '50%',
-    width: '50px',
-    height: '50px',
-    color: 'white',
-    border: 'none',
-    boxShadow: `1px 1px ${10 + audioLevel * 40}px ${audioLevel * 10}px ${color}`,
-    backgroundColor: callStatus === CALL_STATUS.ACTIVE ? 'red' : callStatus === CALL_STATUS.LOADING ? 'orange' : 'green',
-    cursor: 'pointer',
-  }
-
+export const AssistantButton = ({ toggleCall, callStatus }: Partial<ReturnType<typeof useVapi>>) => {
   return (
     <Button
-      style={buttonStyle}
-      className={`mx-auto mt-8 transition ease-in-out ${
-        callStatus === CALL_STATUS.ACTIVE ? 'bg-red-500 hover:bg-red-700' : callStatus === CALL_STATUS.LOADING ? 'bg-orange-500 hover:bg-orange-700' : 'bg-green-500 hover:bg-green-700'
-      } flex items-center justify-center`}
+      variant="destructive"
       onClick={toggleCall}
+      className={cn(
+        'rounded-full size-12',
+        callStatus === CALL_STATUS.ACTIVE && 'bg-red-500 hover:bg-red-700',
+        callStatus === CALL_STATUS.LOADING && 'bg-orange-500 hover:bg-orange-700',
+        callStatus === CALL_STATUS.INACTIVE && 'bg-green-500 hover:bg-green-700'
+      )}
+      aria-label={callStatus === CALL_STATUS.ACTIVE ? 'End call' : 'Start call'}
     >
-      {callStatus === CALL_STATUS.ACTIVE ? <Square /> : callStatus === CALL_STATUS.LOADING ? <Loader2 className="animate-spin" /> : <Mic />}
+      {callStatus === CALL_STATUS.ACTIVE && <PhoneOff />}
+      {callStatus === CALL_STATUS.LOADING && <Loader2 className="animate-spin" />}
+      {callStatus === CALL_STATUS.INACTIVE && <Phone />}
     </Button>
   )
 }
-
-export { AssistantButton }

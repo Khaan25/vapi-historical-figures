@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { HistoricalFigure } from '@/types'
+import { CreateAssistantDTO } from '@vapi-ai/web/dist/api'
 
 import { Message, MessageTypeEnum, TranscriptMessage, TranscriptMessageTypeEnum } from '@/types/conversation.type'
+import { systemPrompt } from '@/lib/prompt'
 import { vapi } from '@/lib/vapi'
-
-import { assistant } from '../assistant'
 
 // import { MessageActionTypeEnum, useMessages } from "./useMessages";
 
@@ -15,7 +16,11 @@ export enum CALL_STATUS {
   LOADING = 'loading',
 }
 
-export function useVapi() {
+type UseVapiProps = {
+  character: HistoricalFigure
+}
+
+export function useVapi({ character }: UseVapiProps) {
   const [isSpeechActive, setIsSpeechActive] = useState(false)
   const [callStatus, setCallStatus] = useState<CALL_STATUS>(CALL_STATUS.INACTIVE)
 
@@ -24,6 +29,29 @@ export function useVapi() {
   const [activeTranscript, setActiveTranscript] = useState<TranscriptMessage | null>(null)
 
   const [audioLevel, setAudioLevel] = useState(0)
+
+  const assistant: Omit<CreateAssistantDTO, 'clientMessages' | 'serverMessages'> = {
+    name: character.name,
+    firstMessage: `Hi, I'm ${character.name}. ${character.description}`,
+    model: {
+      provider: 'openai',
+      model: 'gpt-3.5-turbo',
+      temperature: 0.7,
+      messages: [
+        {
+          role: 'system',
+          content: systemPrompt(character),
+        },
+      ],
+    },
+    voice: {
+      provider: '11labs',
+      voiceId: 'rW2lcIFbB5AVdzWcOG9n',
+    },
+    server: {
+      url: process.env.NEXT_PUBLIC_SERVER_URL ? process.env.NEXT_PUBLIC_SERVER_URL : 'https://08ae-202-43-120-244.ngrok-free.app/api/webhook',
+    },
+  }
 
   useEffect(() => {
     const onSpeechStart = () => setIsSpeechActive(true)
@@ -56,7 +84,7 @@ export function useVapi() {
       }
     }
 
-    const onError = (e: any) => {
+    const onError = (e: Error) => {
       setCallStatus(CALL_STATUS.INACTIVE)
       console.error(e)
     }
@@ -78,12 +106,11 @@ export function useVapi() {
       vapi.off('message', onMessageUpdate)
       vapi.off('error', onError)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const start = async () => {
     setCallStatus(CALL_STATUS.LOADING)
-    const response = vapi.start(assistant)
+    const response = vapi.start(assistant as CreateAssistantDTO)
 
     response.then((res) => {
       console.log('call', res)

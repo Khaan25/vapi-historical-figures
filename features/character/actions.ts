@@ -49,3 +49,15 @@ export async function updateCharacterImage(characterId: string, imageUrl: string
 
   return { data: imageUrl, error: null }
 }
+
+export const getCharacter = async (id: string) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase.from('historicalFigures').select('*').eq('id', id).single()
+
+  if (error) {
+    return null
+  }
+
+  return data
+}

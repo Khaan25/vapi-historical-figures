@@ -28,7 +28,7 @@ export const HistoricalCardListView = ({ figure }: HistoricalCardListViewProps) 
 
           <div className="flex items-center justify-between gap-4"></div>
         </div>
-        <Link href={`/call/${figure.id}`} className="ml-6 flex-shrink-0">
+        <Link href={`/app/call/${figure.id}`} className="ml-6 flex-shrink-0">
           <Button variant="default" size="lg" className="w-full">
             Chat
           </Button>
