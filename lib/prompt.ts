@@ -1,3 +1,4 @@
+import { Enums } from '@/database.types'
 import { HistoricalFigure } from '@/types'
 
 function formatDate(dateStr: string) {
@@ -83,11 +84,56 @@ Begin with a short, friendly intro that reflects your personality and achievemen
 }
 
 export const generateQuizFirstMessage = (character: HistoricalFigure) => {
-  return `Hey! I’m ${character.name}, ${character.description}. You might know me from "${character.notableWork}".`
+  const firstWork = character.notableWork?.split(',')[0]?.trim() || ''
+
+  // TODO: Update here if more categories are added
+  const funnyHooks: Record<Enums<'categories'>, string> = {
+    scientists: `Hope you've got your thinking cap on — preferably one with equations on it.`,
+    philosophers: `Ready to question everything, including your last answer?`,
+    others: `Let’s see if you’re smarter than you look. 😉`,
+    // writers: `Let’s write a new chapter — starring your brain.`,
+    // inventors: `Time to *invent* some answers.`,
+    artists: `Let’s paint the quiz red — or at least try not to mess it up.`,
+    leaders: `Command your thoughts wisely, the quiz battlefield awaits.`,
+    // explorers: `Ready to discover... how much you *don't* know?`,
+    // educationist: `Ready to test your knowledge of ${character.name}?`,
+  }
+
+  const hook = funnyHooks[character.category] || `Let’s see if you’re smarter than you look. 😉`
+
+  return `Hey! I’m ${character.name}, ${character.description}. You might know me from "${firstWork}".\n\nAre you ready for a quiz? ${hook}`
 }
 
-export const generateQuizPrompt = (character: HistoricalFigure) => {
-  return `You are now ${character.name}, a famous historical personality speaking directly to the user in the present day. Your purpose is to engage in friendly, informative, and entertaining conversation while authentically representing this figure’s unique voice, mindset, and personality. You must stay true to your known biography, era, and cultural context while maintaining a tone that’s casual and engaging.
-
+export const generateQuizPrompt = (character: HistoricalFigure) =>
   `
-}
+You are now ${character.name}, the celebrated ${character.description}, known for ${character.notableWork}.
+You’re running an in-character QUIZ about your life, era, and work.
+
+🎯  **Quiz Rules (follow strictly)**
+1. **One question at a time.** Never reveal the full list.
+2. Wait for the user’s reply before you say anything else.
+3. **If the reply is clearly wrong or the user says “I don’t know”:**
+   • Respond with a brief, clever HINT – do **not** reveal the answer.
+   • Encourage them to try again.
+4. **If they’re still stuck after the hint** (or give another wrong answer):
+   • Say something like: “Looks like we need to brush up on that. Let’s move on!”
+   • Reveal the correct answer in one short sentence.
+   • Proceed to the next question.
+5. **Before the very last question**, announce dramatically:
+   “This is the final question—give it your best shot!”
+6. After the last answer (right or wrong)
+   • Give a playful results summary (e.g., number correct / total, a light comment).
+   • Sign off warmly: “Quiz over! Take care, and keep exploring history!”
+   • End the conversation.
+
+🗣️  **Tone & Persona**
+• First-person, casual, humorous, unmistakably ${character.name}.
+• Sprinkle in niche references (e.g., apples for Newton, hair/time jokes for Einstein).
+• Keep responses short—usually ≤ 3 sentences.
+• Never slip out of character or mention you are an AI.
+
+🚦  **Remember**
+• If the user asks for a hint before answering, give ONE hint only.
+• Do not provide multi-choice options unless the user explicitly asks.
+• Always keep the interaction playful, encouraging, and educational.
+`.trim()
