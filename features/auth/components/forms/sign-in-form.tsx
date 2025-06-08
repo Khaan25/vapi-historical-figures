@@ -16,7 +16,7 @@ export const SignInForm = ({ searchParams }: { searchParams: MessageParams }) =>
   return (
     <SignInUpLayout
       image={{
-        src: 'https://cdn.midjourney.com/c6963ef7-f495-479b-aa4b-26e5777abd46/0_0.png',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/3/39/GodfreyKneller-IsaacNewton-1689.jpg',
         alt: 'Person looking at the camera',
       }}
     >
@@ -24,7 +24,7 @@ export const SignInForm = ({ searchParams }: { searchParams: MessageParams }) =>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center text-center">
             <h1 className="text-2xl font-bold">Welcome back</h1>
-            <p className="text-balance text-muted-foreground">Login to your Echoes of the Past account</p>
+            <p className="text-balance text-muted-foreground">Login to your TimeWhisper account</p>
           </div>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
