@@ -5,7 +5,7 @@ import { HistoricalFigure } from '@/types'
 import { CreateAssistantDTO } from '@vapi-ai/web/dist/api'
 
 import { Message, MessageTypeEnum, TranscriptMessage, TranscriptMessageTypeEnum } from '@/types/conversation.type'
-import { systemPrompt } from '@/lib/prompt'
+import { generateFirstMessage, systemPrompt } from '@/lib/prompt'
 import { vapi } from '@/lib/vapi'
 
 // import { MessageActionTypeEnum, useMessages } from "./useMessages";
@@ -32,7 +32,7 @@ export function useVapi({ character }: UseVapiProps) {
 
   const assistant: Omit<CreateAssistantDTO, 'clientMessages' | 'serverMessages'> = {
     name: character.name,
-    firstMessage: `Hi, I'm ${character.name}. ${character.description}`,
+    firstMessage: generateFirstMessage(character),
     model: {
       provider: 'openai',
       model: 'gpt-3.5-turbo',

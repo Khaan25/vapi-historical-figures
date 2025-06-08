@@ -46,8 +46,7 @@ export function AddCharacterForm() {
     },
   })
 
-  const { errors, isSubmitting } = form.formState
-  console.log('errors :', errors)
+  const { isSubmitting } = form.formState
 
   const onDropFile = useCallback(
     async (file: File) => {
