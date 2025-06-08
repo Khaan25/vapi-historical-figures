@@ -9,17 +9,18 @@ import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { buttonVariants } from '@/components/ui/button'
 
-import { CALL_STATUS, useVapi } from '../hooks/useVapi'
+import { useVapi } from '../hooks/useVapi'
+import { CALL_STATUS, VapiCallProps } from '../types'
 import { AssistantButton } from './assistantButton'
 
-type CallInterfaceProps = {
+type CallInterfaceProps = VapiCallProps & {
   character: HistoricalFigure
 }
 
-export const CallInterface = ({ character }: CallInterfaceProps) => {
+export const CallInterface = ({ character, systemPrompt, firstMessage }: CallInterfaceProps) => {
   const [callDuration, setCallDuration] = useState(0)
 
-  const { toggleCall, callStatus } = useVapi({ character })
+  const { toggleCall, callStatus } = useVapi({ character, systemPrompt, firstMessage })
 
   // Timer for call duration
   useEffect(() => {

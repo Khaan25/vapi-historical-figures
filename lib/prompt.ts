@@ -10,7 +10,28 @@ function formatDate(dateStr: string) {
   })
 }
 
-export const systemPrompt = (character: HistoricalFigure) => {
+export function generateCallFirstMessage(character: HistoricalFigure): string {
+  const name = character.name
+  const description = character.description.replace(/\s*\(\d{4}[-–]\d{4}\)\s*$/, '')
+  const work = character.notableWork?.split(',')[0]?.trim() || ''
+
+  const humorMap: Record<string, string> = {
+    scientists: `I’m known for thinking deeply… and sometimes causing a bit of a stir.`,
+    inventors: `I loved tinkering and making things work—sometimes unexpectedly!`,
+    philosophers: `I asked a lot of questions. Like, a LOT.`,
+    leaders: `I liked to lead, occasionally with a grand speech or two.`,
+    artists: `I saw the world in colors and shapes most missed.`,
+    writers: `I lived many lives through my stories—and you’re invited!`,
+    educationist: `I’m here to make learning fun and maybe a little mischievous!`,
+  }
+
+  // Default humor if category not matched
+  const humor = humorMap[character.category] ?? `I’m full of stories and strange ideas.`
+
+  return `Hey! I’m ${name}, ${description}. You might know me from "${work}". ${humor}`
+}
+
+export const generateCallPrompt = (character: HistoricalFigure) => {
   return `You are now ${character.name}, a famous historical personality speaking directly to the user in the present day. Your purpose is to engage in friendly, informative, and entertaining conversation while authentically representing this figure’s unique voice, mindset, and personality. You must stay true to your known biography, era, and cultural context while maintaining a tone that’s casual and engaging.
 
 Configuration
@@ -61,23 +82,12 @@ Begin with a short, friendly intro that reflects your personality and achievemen
 `
 }
 
-export function generateFirstMessage(character: HistoricalFigure): string {
-  const name = character.name
-  const description = character.description.replace(/\s*\(\d{4}[-–]\d{4}\)\s*$/, '')
-  const work = character.notableWork?.split(',')[0]?.trim() || ''
+export const generateQuizFirstMessage = (character: HistoricalFigure) => {
+  return `Hey! I’m ${character.name}, ${character.description}. You might know me from "${character.notableWork}".`
+}
 
-  const humorMap: Record<string, string> = {
-    scientists: `I’m known for thinking deeply… and sometimes causing a bit of a stir.`,
-    inventors: `I loved tinkering and making things work—sometimes unexpectedly!`,
-    philosophers: `I asked a lot of questions. Like, a LOT.`,
-    leaders: `I liked to lead, occasionally with a grand speech or two.`,
-    artists: `I saw the world in colors and shapes most missed.`,
-    writers: `I lived many lives through my stories—and you’re invited!`,
-    educationist: `I’m here to make learning fun and maybe a little mischievous!`,
-  }
+export const generateQuizPrompt = (character: HistoricalFigure) => {
+  return `You are now ${character.name}, a famous historical personality speaking directly to the user in the present day. Your purpose is to engage in friendly, informative, and entertaining conversation while authentically representing this figure’s unique voice, mindset, and personality. You must stay true to your known biography, era, and cultural context while maintaining a tone that’s casual and engaging.
 
-  // Default humor if category not matched
-  const humor = humorMap[character.category] ?? `I’m full of stories and strange ideas.`
-
-  return `Hey! I’m ${name}, ${description}. You might know me from "${work}". ${humor}`
+  `
 }

@@ -1,9 +1,9 @@
+import Link from 'next/link'
 import { Tables } from '@/database.types'
 
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import Link from 'next/link'
+import { CardContent, CardHeader } from '@/components/ui/card'
 
 type QuizWithFigure = Tables<'quizzes'> & {
   historicalFigure: {
@@ -40,7 +40,7 @@ export const QuizList = ({ quizzes }: QuizListProps) => {
             </div>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground line-clamp-2">{quiz.question}</p>
+            <p className="text-sm text-muted-foreground line-clamp-2">{quiz.type}</p>
           </CardContent>
         </Link>
       ))}

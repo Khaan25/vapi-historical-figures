@@ -1,16 +1,18 @@
 'use client'
 
-import { useVapi } from '../hooks/useVapi'
-import { TranscriptView } from './TranscriptView'
 import { HistoricalFigure } from '@/types'
 
-type ChatViewProps = {
+import { useVapi } from '../hooks/useVapi'
+import { VapiCallProps } from '../types'
+import { TranscriptView } from './TranscriptView'
+
+type ChatViewProps = VapiCallProps & {
   character: HistoricalFigure
   userImage: string
 }
 
-function ChatView({ character, userImage }: ChatViewProps) {
-  const { messages, activeTranscript } = useVapi({ character })
+function ChatView({ character, userImage, systemPrompt, firstMessage }: ChatViewProps) {
+  const { messages, activeTranscript } = useVapi({ character, systemPrompt, firstMessage })
 
   return (
     <div className="flex flex-col min-h-screen size-full">

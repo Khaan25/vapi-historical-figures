@@ -3,6 +3,8 @@ import { Display } from '@/features/call/components/chat-view'
 import { getCharacter } from '@/features/character/actions'
 import { createClient } from '@/utils/supabase/server'
 
+import { generateCallFirstMessage, generateCallPrompt } from '@/lib/prompt'
+
 type PageProps = {
   params: Promise<{
     id: string
@@ -14,11 +16,11 @@ export default async function Page({ params }: PageProps) {
 
   const character = await getCharacter(id)
 
-  const supabase = await createClient()
-
   if (!character) {
     return <div>Character not found</div>
   }
+
+  const supabase = await createClient()
 
   const {
     data: { user },
@@ -30,10 +32,14 @@ export default async function Page({ params }: PageProps) {
 
   const userImage = user?.user_metadata.avatar_url as string
 
+  // These are the default prompts for the call
+  const firstMessage = generateCallFirstMessage(character)
+  const systemPrompt = generateCallPrompt(character)
+
   return (
     <div className="grid grid-cols-[.6fr_.4fr]">
-      <CallInterface character={character} />
-      <Display character={character} userImage={userImage} />
+      <CallInterface character={character} systemPrompt={systemPrompt} firstMessage={firstMessage} />
+      <Display character={character} userImage={userImage} systemPrompt={systemPrompt} firstMessage={firstMessage} />
     </div>
   )
 }

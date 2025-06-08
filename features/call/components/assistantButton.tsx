@@ -1,8 +1,10 @@
-import { CALL_STATUS, useVapi } from '@/features/call/hooks/useVapi'
+import { useVapi } from '@/features/call/hooks/useVapi'
 import { Loader2, Phone, PhoneOff } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+
+import { CALL_STATUS } from '../types'
 
 export const AssistantButton = ({ toggleCall, callStatus }: Partial<ReturnType<typeof useVapi>>) => {
   return (

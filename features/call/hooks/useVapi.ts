@@ -5,22 +5,15 @@ import { HistoricalFigure } from '@/types'
 import { CreateAssistantDTO } from '@vapi-ai/web/dist/api'
 
 import { Message, MessageTypeEnum, TranscriptMessage, TranscriptMessageTypeEnum } from '@/types/conversation.type'
-import { generateFirstMessage, systemPrompt } from '@/lib/prompt'
 import { vapi } from '@/lib/vapi'
 
-// import { MessageActionTypeEnum, useMessages } from "./useMessages";
+import { CALL_STATUS, VapiCallProps } from '../types'
 
-export enum CALL_STATUS {
-  INACTIVE = 'inactive',
-  ACTIVE = 'active',
-  LOADING = 'loading',
-}
-
-type UseVapiProps = {
+type UseVapiProps = VapiCallProps & {
   character: HistoricalFigure
 }
 
-export function useVapi({ character }: UseVapiProps) {
+export function useVapi({ character, systemPrompt, firstMessage }: UseVapiProps) {
   const [isSpeechActive, setIsSpeechActive] = useState(false)
   const [callStatus, setCallStatus] = useState<CALL_STATUS>(CALL_STATUS.INACTIVE)
 
@@ -32,7 +25,7 @@ export function useVapi({ character }: UseVapiProps) {
 
   const assistant: Omit<CreateAssistantDTO, 'clientMessages' | 'serverMessages'> = {
     name: character.name,
-    firstMessage: generateFirstMessage(character),
+    firstMessage,
     model: {
       provider: 'openai',
       model: 'gpt-3.5-turbo',
@@ -40,7 +33,7 @@ export function useVapi({ character }: UseVapiProps) {
       messages: [
         {
           role: 'system',
-          content: systemPrompt(character),
+          content: systemPrompt,
         },
       ],
     },
