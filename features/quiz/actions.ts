@@ -63,3 +63,23 @@ export async function addManualQuizzes(data: QuizFormValues, figureId: string) {
     error: null,
   }
 }
+
+export const getQuizQuestions = async (id: string) => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase.from('quizQuestions').select('*').eq('historicalFigureId', id)
+
+  if (error) {
+    return {
+      data: null,
+      error: error.message,
+    }
+  }
+
+  const formattedQuestions = data.map((question) => question.question)
+
+  return {
+    data: formattedQuestions,
+    error: null,
+  }
+}

@@ -41,7 +41,7 @@ export function TranscriptView({ messages, activeTranscript, character, userImag
         </div>
       </div>
 
-      <div className="flex flex-col space-y-4 p-4 h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+      <div className="flex flex-col space-y-4 p-4 h-[calc(100vh-45px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
         {filteredMessages.map((message, index) => (
           // @ts-expect-error type error
           <div key={index} className={cn('group flex items-start space-x-2 relative', message.role === 'user' ? 'justify-end' : 'justify-start')}>

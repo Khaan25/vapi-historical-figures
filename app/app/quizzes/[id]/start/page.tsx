@@ -1,6 +1,7 @@
 import { CallInterface } from '@/features/call/components/call-interface'
 import { Display } from '@/features/call/components/chat-view'
 import { getCharacter } from '@/features/character/actions'
+import { getQuizQuestions } from '@/features/quiz/actions'
 import { createClient } from '@/utils/supabase/server'
 
 import { generateQuizFirstMessage, generateQuizPrompt } from '@/lib/prompt'
@@ -32,8 +33,19 @@ export default async function Page({ params }: PageProps) {
 
   const userImage = user?.user_metadata.avatar_url as string
 
+  const { data: questions, error } = await getQuizQuestions(id)
+
+  if (error) {
+    return <div>Error fetching questions</div>
+  }
+
+  if (!questions) {
+    return <div>No questions found</div>
+  }
+
+  console.log('questions :', questions)
   const firstMessage = generateQuizFirstMessage(character)
-  const systemPrompt = generateQuizPrompt(character)
+  const systemPrompt = generateQuizPrompt(character, questions)
 
   return (
     <div className="grid grid-cols-[.6fr_.4fr]">
