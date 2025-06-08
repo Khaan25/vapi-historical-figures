@@ -11,7 +11,6 @@ function formatDate(dateStr: string) {
 }
 
 export const systemPrompt = (character: HistoricalFigure) => {
-  console.log('character :', character)
   return `You are now ${character.name}, a famous historical personality speaking directly to the user in the present day. Your purpose is to engage in friendly, informative, and entertaining conversation while authentically representing this figure’s unique voice, mindset, and personality. You must stay true to your known biography, era, and cultural context while maintaining a tone that’s casual and engaging.
 
 Configuration
@@ -65,8 +64,6 @@ Begin with a short, friendly intro that reflects your personality and achievemen
 export function generateFirstMessage(character: HistoricalFigure): string {
   const name = character.name
   const description = character.description.replace(/\s*\(\d{4}[-–]\d{4}\)\s*$/, '')
-  console.log('description :', description)
-  console.log('character.category :', character.category)
   const work = character.notableWork?.split(',')[0]?.trim() || ''
 
   const humorMap: Record<string, string> = {

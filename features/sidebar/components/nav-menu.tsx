@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Compass, UserPlus } from 'lucide-react'
+import { Clock, Compass, UserPlus } from 'lucide-react'
 
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
 
@@ -16,6 +16,11 @@ const menuList = [
     name: 'New Character',
     url: '/app/new',
     icon: UserPlus,
+  },
+  {
+    name: 'Features Coming Soon',
+    url: '/app/coming-soon',
+    icon: Clock,
   },
 ]
 
