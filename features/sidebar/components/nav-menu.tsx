@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BookOpen, Clock, Compass, UserPlus } from 'lucide-react'
+import { BarChart, BookOpen, Clock, Compass, UserPlus } from 'lucide-react'
 
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
 
@@ -21,6 +21,11 @@ const menuList = [
     name: 'Quizzes',
     url: '/app/quizzes',
     icon: BookOpen,
+  },
+  {
+    name: 'Analytics',
+    url: '/app/analytics',
+    icon: BarChart,
   },
   {
     name: 'Features Coming Soon',

@@ -12,6 +12,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { useVapi } from '../hooks/useVapi'
 import { CALL_STATUS, VapiCallProps } from '../types'
 import { AssistantButton } from './assistantButton'
+import Siri from './siri'
 
 type CallInterfaceProps = VapiCallProps & {
   character: HistoricalFigure
@@ -20,7 +21,7 @@ type CallInterfaceProps = VapiCallProps & {
 export const CallInterface = ({ character, systemPrompt, firstMessage }: CallInterfaceProps) => {
   const [callDuration, setCallDuration] = useState(0)
 
-  const { toggleCall, callStatus } = useVapi({ character, systemPrompt, firstMessage })
+  const { toggleCall, callStatus, audioLevel } = useVapi({ character, systemPrompt, firstMessage })
 
   // Timer for call duration
   useEffect(() => {
@@ -73,6 +74,8 @@ export const CallInterface = ({ character, systemPrompt, firstMessage }: CallInt
         )}
 
         {callStatus === CALL_STATUS.INACTIVE && <p className="text-muted-foreground">Call ended</p>}
+
+        <Siri theme="ios9" audioLevel={audioLevel} callStatus={callStatus} />
       </div>
 
       {/* Bottom action Buttons */}
