@@ -8,8 +8,8 @@ export function BentoGrid({ className, ...props }: ComponentProps<'div'>) {
     <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto px-4', className)} {...props}>
       <div className="flex flex-col gap-4 p-6 rounded-lg bg-violet-200">
         <div>
-          <h3 className="text-lg font-semibold mb-2">Chat with History&apos;s Greatest Minds</h3>
-          <p className="text-sm text-neutral-600">Engage in meaningful conversations with historical figures like Einstein, Leonardo da Vinci, or Marie Curie.</p>
+          <h3 className="text-lg font-semibold mb-2">Speak with Legends</h3>
+          <p className="text-sm text-neutral-600">Converse with iconic thinkers like Einstein, Leonardo da Vinci, and Marie Curie—brought to life through AI.</p>
         </div>
         <div className="bg-white/20 p-4 rounded-lg group-hover:scale-95 transition-transform duration-300">
           <Image
@@ -24,8 +24,8 @@ export function BentoGrid({ className, ...props }: ComponentProps<'div'>) {
 
       <div className="flex flex-col md:flex-row lg:flex-col min-h-full gap-6 group">
         <div className="px-6 md:px-11 py-16 md:py-20 lg:py-0 text-center relative overflow-hidden flex flex-col rounded-md h-full flex-1 justify-center group/item bg-green-100">
-          <h3 className="text-lg font-semibold">Learn from the Past</h3>
-          <p className="text-sm text-neutral-600 mt-2">Gain insights and wisdom from centuries of human knowledge and experience.</p>
+          <h3 className="text-lg font-semibold">Learn from the Minds that Shaped Humanity</h3>
+          <p className="text-sm text-neutral-600 mt-2">Absorb timeless insights from centuries of human progress, philosophy, and discovery.</p>
           <div className="group-hover/item:md:opacity-40 flex justify-between pointer-events-none absolute xl:w-[150%] md:w-[180%] w-[140%] opacity-10 md:opacity-20 left-1/2 -translate-x-1/2 inset-x-0 transition-all duration-300">
             <Image
               className="rotating-animation transition-transform duration-500 lg:group-hover/item:rotate-[20deg]"
@@ -44,8 +44,8 @@ export function BentoGrid({ className, ...props }: ComponentProps<'div'>) {
           </div>
         </div>
         <div className="px-6 md:px-11 py-16 md:py-20 lg:py-0 text-center relative overflow-hidden flex flex-col rounded-md h-full flex-1 justify-center group/item bg-lime-100">
-          <h3 className="text-lg font-semibold">Personalized Experience</h3>
-          <p className="text-sm text-neutral-600 mt-2">Ask questions, seek advice, and explore different perspectives from your favorite historical figures.</p>
+          <h3 className="text-lg font-semibold">Ask. Learn. Reflect.</h3>
+          <p className="text-sm text-neutral-600 mt-2">Pose your own questions and get nuanced answers tailored to your curiosity—from the voices of history.</p>
           <div className="group-hover/item:top-[calc(100%_-_1.8rem)] absolute left-1/2 -translate-x-1/2 top-[calc(100%_-_2.5rem)] transition-all duration-300">
             <Image
               className="rotating-animation transition-transform duration-500 lg:group-hover/item:translate-y-5"
@@ -60,8 +60,8 @@ export function BentoGrid({ className, ...props }: ComponentProps<'div'>) {
 
       <div className="flex flex-col-reverse gap-4 p-6 rounded-lg bg-violet-200">
         <div>
-          <h3 className="text-lg font-semibold mb-2">Time Travel Through Conversation</h3>
-          <p className="text-sm text-neutral-600">Experience history through interactive dialogues with figures who shaped our world.</p>
+          <h3 className="text-lg font-semibold mb-2">Step into the Past, One Voice at a Time</h3>
+          <p className="text-sm text-neutral-600">Relive history through dynamic, lifelike dialogue with the people who shaped our world.</p>
         </div>
         <div className="flex justify-between bg-white/20 p-4 rounded-lg">
           <Image

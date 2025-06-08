@@ -44,8 +44,8 @@ const historicalFigures = [
 export default function DraggableSection() {
   return (
     <DraggableCardContainer className="relative flex min-h-screen w-full items-center justify-center overflow-clip">
-      <p className="absolute top-1/2 mx-auto max-w-sm -translate-y-3/4 text-center text-2xl font-black text-neutral-400 md:text-4xl dark:text-neutral-800">
-        Engage in meaningful conversations with history&apos;s greatest minds
+      <p className="absolute top-1/2 mx-auto max-w-md text-balance -translate-y-3/4 text-center text-2xl font-black text-neutral-400 md:text-4xl dark:text-neutral-800">
+        Meet the legends. Speak their truth. Engage in meaningful conversations with history&apos;s greatest minds
       </p>
       {historicalFigures.map((item) => (
         <DraggableCardBody key={item.name} className={item.className}>

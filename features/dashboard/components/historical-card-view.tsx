@@ -35,7 +35,7 @@ export const HistoricalCardView = ({ figure }: HistoricalCardViewProps) => {
 
           <Link href={`/app/call/${figure.id}`} className="block">
             <Button className="w-full backdrop-blur-sm bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors" size="lg">
-              Start Chat
+              Start Call
             </Button>
           </Link>
         </div>

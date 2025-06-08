@@ -2,45 +2,45 @@ import { Brain, History, MessageSquare, Mic, PersonStanding, Shield, Sparkles, U
 
 import { cn } from '@/lib/utils'
 
-const features = [
+export const features = [
   {
-    title: 'Interactive Voice Chat',
-    description: 'Have real conversations with historical figures through advanced AI voice technology.',
+    title: 'Real-Voice Conversations',
+    description: 'Talk naturally with AI voices that mirror each figure’s unique cadence and tone.',
     icon: <Mic size={24} />,
   },
   {
-    title: 'Historical Accuracy',
-    description: 'Engage with historically accurate personas based on extensive research and documentation.',
+    title: 'Scholarly Accuracy',
+    description: 'Personas grounded in primary sources and peer-reviewed research for true-to-history dialogue.',
     icon: <History size={24} />,
   },
   {
-    title: 'Dynamic Conversations',
-    description: "Each interaction is unique, with contextual responses that match the historical figure's personality.",
+    title: 'Adaptive Dialogue Engine',
+    description: 'Context-aware responses that deepen as your conversation evolves.',
     icon: <MessageSquare size={24} />,
   },
   {
-    title: 'Educational Experience',
-    description: 'Learn history directly from the source through immersive conversations.',
+    title: 'Curriculum-Ready Learning (coming soon)',
+    description: 'Convert chats into lesson plans with timestamps, references, and exportable transcripts.',
     icon: <Brain size={24} />,
   },
   {
-    title: 'Multiple Personalities',
-    description: 'Choose from a diverse range of historical figures across different eras and fields.',
+    title: 'Ever-Growing Cast',
+    description: 'Explore an expanding library of legends from every era and discipline.',
     icon: <Users size={24} />,
   },
   {
-    title: 'Real-time Subtitles',
-    description: 'Follow conversations easily with synchronized subtitles for better comprehension.',
+    title: 'Live Captions & Transcripts',
+    description: 'Follow along with real-time subtitles and save full transcripts for review.',
     icon: <Sparkles size={24} />,
   },
   {
-    title: 'Secure Platform',
-    description: 'Your conversations are protected with enterprise-grade security and authentication.',
+    title: 'Privacy & Security',
+    description: 'OAuth login and end-to-end encryption keep every conversation safe.',
     icon: <Shield size={24} />,
   },
   {
-    title: 'Personalized Experience',
-    description: 'Track your interactions and build relationships with historical figures over time.',
+    title: 'Personal Progress Tracking (coming soon)',
+    description: 'Bookmark insights, earn badges, and watch your historical knowledge grow.',
     icon: <PersonStanding size={24} />,
   },
 ]

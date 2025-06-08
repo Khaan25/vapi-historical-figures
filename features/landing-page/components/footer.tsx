@@ -1,8 +1,6 @@
 import Link from 'next/link'
 
-const footerLinks = [
-  { label: 'Zia U. (Developer)', href: 'https://v2-zzia.vercel.app' },
-] as const
+const footerLinks = [{ label: 'Zia U. (Developer)', href: 'https://v2-zzia.vercel.app' }] as const
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -13,7 +11,7 @@ export default function Footer() {
         <span className="text-sm text-muted-foreground sm:text-center">
           © {currentYear}{' '}
           <Link href="/" className="hover:underline">
-            Echoes of the Past
+            TimeWhisper
           </Link>
           . All Rights Reserved.
         </span>

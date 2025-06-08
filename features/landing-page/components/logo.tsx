@@ -7,7 +7,7 @@ type LogoProps = ComponentProps<'div'>
 export default function Logo({ className, ...props }: LogoProps) {
   return (
     <div className={cn('text-2xl font-bold', className)} {...props}>
-      EP
+      TimeWhisper
     </div>
   )
 }

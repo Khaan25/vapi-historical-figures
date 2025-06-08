@@ -46,22 +46,22 @@ export function Hero() {
                 ...transitionVariants,
               }}
             >
-              <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16">Converse with History&apos;s Greatest Minds</h1>
+              <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16">Whisper with the Voices of History</h1>
               <p className="mt-8 max-w-2xl text-pretty text-lg">
-                Experience immersive conversations with historical figures through AI-powered voice interactions. Learn directly from the past in a way that&apos;s engaging, educational, and
-                revolutionary.
+                Step into the past with AI-driven conversations. TimeWhisper brings legendary historical figures to life through lifelike voice interactions — making learning deeply personal and
+                unforgettable.
               </p>
               <div className="mt-12 flex items-center gap-2">
                 <div key={1} className="bg-foreground/10 rounded-[14px] border p-0.5">
                   <Button asChild size="lg" className="rounded-xl px-5 text-base">
                     <Link href="/app">
-                      <span className="text-nowrap">Start Talking</span>
+                      <span className="text-nowrap">Start Whispering</span>
                     </Link>
                   </Button>
                 </div>
                 <Button key={2} asChild size="lg" variant="ghost" className="h-[42px] rounded-xl px-5 text-base">
                   <Link href="#features">
-                    <span className="text-nowrap">View Features</span>
+                    <span className="text-nowrap">Learn More</span>
                   </Link>
                 </Button>
               </div>
