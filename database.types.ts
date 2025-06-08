@@ -48,6 +48,83 @@ export type Database = {
         }
         Relationships: []
       }
+      quizQuestions: {
+        Row: {
+          created_at: string | null
+          historicalFigureId: string
+          id: string
+          question: string
+          quizId: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          historicalFigureId: string
+          id?: string
+          question: string
+          quizId?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          historicalFigureId?: string
+          id?: string
+          question?: string
+          quizId?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_historical_figure_id_fkey"
+            columns: ["historicalFigureId"]
+            isOneToOne: false
+            referencedRelation: "historicalFigures"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quizQuestions_quizId_fkey"
+            columns: ["quizId"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quizzes: {
+        Row: {
+          created_at: string | null
+          historicalFigureId: string
+          id: string
+          type: Database["public"]["Enums"]["quizType"]
+          updated_at: string | null
+          userId: string
+        }
+        Insert: {
+          created_at?: string | null
+          historicalFigureId: string
+          id?: string
+          type: Database["public"]["Enums"]["quizType"]
+          updated_at?: string | null
+          userId: string
+        }
+        Update: {
+          created_at?: string | null
+          historicalFigureId?: string
+          id?: string
+          type?: Database["public"]["Enums"]["quizType"]
+          updated_at?: string | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_historicalFigureId_fkey"
+            columns: ["historicalFigureId"]
+            isOneToOne: false
+            referencedRelation: "historicalFigures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -62,6 +139,9 @@ export type Database = {
         | "philosophers"
         | "leaders"
         | "others"
+      difficulty_type: "easy" | "medium" | "hard"
+      mood_type: "positive" | "neutral" | "negative"
+      quizType: "ai" | "manual"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -184,6 +264,9 @@ export const Constants = {
         "leaders",
         "others",
       ],
+      difficulty_type: ["easy", "medium", "hard"],
+      mood_type: ["positive", "neutral", "negative"],
+      quizType: ["ai", "manual"],
     },
   },
 } as const

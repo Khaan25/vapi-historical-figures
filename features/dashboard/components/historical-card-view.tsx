@@ -1,18 +1,17 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import { HistoricalFigure } from '@/types'
 
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 
 import { Badge } from '../../../components/ui/badge'
-import { Button } from '../../../components/ui/button'
 import { Card, CardContent } from '../../../components/ui/card'
 
 type HistoricalCardViewProps = {
   figure: HistoricalFigure
+  children: React.ReactNode
 }
 
-export const HistoricalCardView = ({ figure }: HistoricalCardViewProps) => {
+export const HistoricalCardView = ({ figure, children }: HistoricalCardViewProps) => {
   return (
     <Card className="group relative isolate h-[400px] overflow-hidden border-0 py-0 shadow-lg">
       <ProgressiveBlur className="pointer-events-none z-10 absolute bottom-0 left-0 h-[75%] w-full" blurIntensity={0.5} />
@@ -33,11 +32,7 @@ export const HistoricalCardView = ({ figure }: HistoricalCardViewProps) => {
             <p className="text-sm text-gray-200">{figure.description}</p>
           </div>
 
-          <Link href={`/app/call/${figure.id}`} className="block">
-            <Button className="w-full backdrop-blur-sm bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors" size="lg">
-              Start Call
-            </Button>
-          </Link>
+          {children}
         </div>
       </CardContent>
     </Card>

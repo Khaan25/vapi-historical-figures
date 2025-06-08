@@ -37,3 +37,9 @@ export const characterSchema = z.object({
 export type CharacterFormValues = z.infer<typeof characterSchema>
 export const editableCharacterSchema = characterSchema.extend(commonEditSchema.shape)
 export type EditableCharacterFormValues = z.infer<typeof editableCharacterSchema>
+
+export const questionSchema = z.object({ question: z.string().min(1, 'Question is required') })
+export const quizSchema = z.object({
+  questions: z.array(questionSchema).min(1, 'At least one question is required'),
+})
+export type QuizFormValues = z.infer<typeof quizSchema>
