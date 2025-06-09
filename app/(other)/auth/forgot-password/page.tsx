@@ -1,14 +1,21 @@
 import Link from 'next/link'
 import AuthWrapper from '@/features/auth/components/auth-wrapper'
-import { FormMessage, Message } from '@/features/auth/components/form-message'
+import { FormMessage } from '@/features/auth/components/form-message'
 import { SubmitButton } from '@/features/auth/components/submit-button'
+import { MessageParams } from '@/types'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { forgotPasswordAction } from '@/app/(other)/auth/actions'
 
-export default function ForgotPassword({ searchParams }: { searchParams: Message }) {
+type ForgotPasswordPageProps = {
+  searchParams: Promise<MessageParams>
+}
+
+export default async function ForgotPassword({ searchParams }: ForgotPasswordPageProps) {
+  const params = await searchParams
+
   return (
     <AuthWrapper>
       <Card className="mx-auto max-w-sm">
@@ -25,7 +32,7 @@ export default function ForgotPassword({ searchParams }: { searchParams: Message
             <SubmitButton pendingText="Resetting..." className="w-full">
               Reset Password
             </SubmitButton>
-            <FormMessage message={searchParams} />
+            <FormMessage message={params} />
             <div className="mt-4 text-center text-sm">
               Remember your password?{' '}
               <Link href="/auth/sign-in" className="underline">

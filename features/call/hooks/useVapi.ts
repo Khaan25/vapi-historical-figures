@@ -40,6 +40,11 @@ export function useVapi({ character, systemPrompt, firstMessage }: UseVapiProps)
     voice: {
       provider: '11labs',
       voiceId: 'rW2lcIFbB5AVdzWcOG9n',
+      stability: 0.4,
+      similarityBoost: 0.8,
+      speed: 1,
+      style: 0.5,
+      useSpeakerBoost: true,
     },
     server: {
       url: process.env.NEXT_PUBLIC_SERVER_URL ? process.env.NEXT_PUBLIC_SERVER_URL : 'https://08ae-202-43-120-244.ngrok-free.app/api/webhook',

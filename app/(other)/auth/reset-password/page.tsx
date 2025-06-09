@@ -1,13 +1,20 @@
 import AuthWrapper from '@/features/auth/components/auth-wrapper'
-import { FormMessage, Message } from '@/features/auth/components/form-message'
+import { FormMessage } from '@/features/auth/components/form-message'
 import { SubmitButton } from '@/features/auth/components/submit-button'
+import { MessageParams } from '@/types'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { resetPasswordAction } from '@/app/(other)/auth/actions'
 
-export default async function ResetPassword({ searchParams }: { searchParams: Message }) {
+type ResetPasswordPageProps = {
+  searchParams: Promise<MessageParams>
+}
+
+export default async function ResetPassword({ searchParams }: ResetPasswordPageProps) {
+  const params = await searchParams
+
   return (
     <AuthWrapper>
       <Card className="mx-auto max-w-sm">
@@ -28,7 +35,7 @@ export default async function ResetPassword({ searchParams }: { searchParams: Me
             <SubmitButton pendingText="Resetting..." className="w-full">
               Reset password
             </SubmitButton>
-            <FormMessage message={searchParams} />
+            <FormMessage message={params} />
           </form>
         </CardContent>
       </Card>

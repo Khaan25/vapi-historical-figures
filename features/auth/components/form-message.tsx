@@ -3,7 +3,7 @@
 export type Message = { success: string } | { error: string; error_description: string } | { message: string }
 
 export function FormMessage({ message }: { message: Message }) {
-  const messageValue = message
+const messageValue = message
 
   if (!messageValue) {
     return null
