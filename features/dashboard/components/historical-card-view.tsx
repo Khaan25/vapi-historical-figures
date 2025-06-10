@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { HistoricalFigure } from '@/types'
 
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 
@@ -7,7 +6,12 @@ import { Badge } from '../../../components/ui/badge'
 import { Card, CardContent } from '../../../components/ui/card'
 
 type HistoricalCardViewProps = {
-  figure: HistoricalFigure
+  figure: {
+    badge: string
+    imageUrl: string
+    name: string
+    description: string
+  }
   children: React.ReactNode
 }
 
@@ -17,7 +21,7 @@ export const HistoricalCardView = ({ figure, children }: HistoricalCardViewProps
       <ProgressiveBlur className="pointer-events-none z-10 absolute bottom-0 left-0 h-[75%] w-full" blurIntensity={0.5} />
 
       <Badge variant="secondary" className="absolute top-2 right-2 z-20 bg-white/10 hover:bg-white/20 text-white capitalize backdrop-blur-sm">
-        {figure.category}
+        {figure.badge}
       </Badge>
 
       <div className="absolute inset-0">

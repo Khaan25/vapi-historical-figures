@@ -19,7 +19,14 @@ export function HistoricalFigureCard({ figure, viewMode }: HistoricalFigureCardP
   }
 
   return (
-    <HistoricalCardView figure={figure}>
+    <HistoricalCardView
+      figure={{
+        badge: figure.category,
+        imageUrl: figure.imageUrl,
+        name: figure.name,
+        description: figure.description,
+      }}
+    >
       <Link href={`/app/call/${figure.id}`} className="block">
         <Button className="w-full backdrop-blur-sm bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors" size="lg">
           Start Call

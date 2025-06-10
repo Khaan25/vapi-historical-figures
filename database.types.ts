@@ -9,6 +9,50 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      feedbacks: {
+        Row: {
+          areasForImprovement: Json
+          categoryScores: Json
+          createdAt: string
+          finalAssessment: string
+          id: string
+          quizId: string
+          strengths: Json
+          totalScore: number
+          userId: string
+        }
+        Insert: {
+          areasForImprovement: Json
+          categoryScores: Json
+          createdAt?: string
+          finalAssessment: string
+          id?: string
+          quizId: string
+          strengths: Json
+          totalScore: number
+          userId: string
+        }
+        Update: {
+          areasForImprovement?: Json
+          categoryScores?: Json
+          createdAt?: string
+          finalAssessment?: string
+          id?: string
+          quizId?: string
+          strengths?: Json
+          totalScore?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feedbacks_quizid_fkey"
+            columns: ["quizId"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       historicalFigures: {
         Row: {
           bio: string
@@ -144,7 +188,11 @@ export type Database = {
       quizType: "ai" | "manual"
     }
     CompositeTypes: {
-      [_ in never]: never
+      feedback_category_score: {
+        name: string | null
+        score: number | null
+        comment: string | null
+      }
     }
   }
 }

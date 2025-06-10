@@ -1,28 +1,13 @@
 import Link from 'next/link'
 import { QuizList } from '@/features/quiz/components/quiz-list'
-import { createClient } from '@/utils/supabase/server'
+import { getQuizzes } from '@/features/quiz/queries'
 
 import { buttonVariants } from '@/components/ui/button'
 import { Screen } from '@/components/common/screen'
 import { ScreenHeader } from '@/components/common/screen-header'
 
 export default async function QuizPage() {
-  const supabase = await createClient()
-
-  const { data: quizzes, error } = await supabase
-    .from('quizzes')
-    .select(
-      `
-      *,
-      historicalFigure:historicalFigureId (
-        id,
-        name,
-        description,
-        imageUrl
-      )
-    `
-    )
-    .order('created_at', { ascending: true })
+  const { data: quizzes, error } = await getQuizzes()
 
   if (error) {
     console.error('Error fetching historical figures:', error)
@@ -36,6 +21,7 @@ export default async function QuizPage() {
           Create Quiz
         </Link>
       </ScreenHeader>
+
       <QuizList quizzes={quizzes} />
     </Screen>
   )

@@ -1,48 +1,37 @@
 import Link from 'next/link'
-import { Tables } from '@/database.types'
+import { HistoricalCardView } from '@/features/dashboard/components/historical-card-view'
 
-import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
-import { CardContent, CardHeader } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
-type QuizWithFigure = Tables<'quizzes'> & {
-  historicalFigure: {
-    id: string
-    name: string
-    description: string | null
-    imageUrl: string | null
-  }
-}
+import { getQuizzes } from '../queries'
 
 type QuizListProps = {
-  quizzes: QuizWithFigure[]
+  quizzes: NonNullable<Awaited<ReturnType<typeof getQuizzes>>>['data']
 }
 
 export const QuizList = ({ quizzes }: QuizListProps) => {
+  if (!quizzes || quizzes.length === 0) {
+    return <div>No quizzes found</div>
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {quizzes.map((quiz) => (
-        <Link key={quiz.id} href={`/app/quizzes/${quiz.historicalFigureId}/start`} className="overflow-hidden">
-          <CardHeader className="relative">
-            {quiz.historicalFigure.imageUrl && (
-              <div className="absolute inset-0">
-                <img src={quiz.historicalFigure.imageUrl} alt={quiz.historicalFigure.name} className="object-cover w-full h-full opacity-20" />
-              </div>
-            )}
-            <div className="relative">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">{quiz.historicalFigure.name}</h3>
-                <Badge variant="outline" className={cn(quiz.userId ? 'bg-blue-500/10 text-blue-500' : 'bg-green-500/10 text-green-500')}>
-                  {quiz.userId ? 'manual' : 'ai'}
-                </Badge>
-              </div>
-              <p className="text-sm text-muted-foreground line-clamp-2">{quiz.historicalFigure.description}</p>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground line-clamp-2">{quiz.type}</p>
-          </CardContent>
-        </Link>
+        <HistoricalCardView
+          key={quiz.id}
+          figure={{
+            badge: quiz.historicalFigure.category,
+            imageUrl: quiz.historicalFigure.imageUrl ?? '',
+            name: quiz.historicalFigure.name,
+            description: quiz.historicalFigure.description ?? '',
+          }}
+        >
+          <Link href={`/app/quizzes/${quiz.historicalFigureId}/start`} className="block">
+            <Button className="w-full backdrop-blur-sm bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors" size="lg">
+              Start Quiz
+            </Button>
+          </Link>
+        </HistoricalCardView>
       ))}
     </div>
   )

@@ -1,3 +1,4 @@
+import { CallHelperText } from '@/features/call/components/call-helper-text'
 import { CallInterface } from '@/features/call/components/call-interface'
 import { Display } from '@/features/call/components/chat-view'
 import { getCharacter } from '@/features/character/actions'
@@ -38,7 +39,9 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="grid grid-cols-[.6fr_.4fr]">
-      <CallInterface character={character} systemPrompt={systemPrompt} firstMessage={firstMessage} />
+      <CallInterface character={character} systemPrompt={systemPrompt} firstMessage={firstMessage} backHref="/app">
+        <CallHelperText title="Try to:" options={['Ask a question', 'Request Explanation', 'Topic Discussion']} />
+      </CallInterface>
       <Display character={character} userImage={userImage} systemPrompt={systemPrompt} firstMessage={firstMessage} />
     </div>
   )

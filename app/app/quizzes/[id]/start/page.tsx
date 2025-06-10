@@ -43,13 +43,12 @@ export default async function Page({ params }: PageProps) {
     return <div>No questions found</div>
   }
 
-  console.log('questions :', questions)
   const firstMessage = generateQuizFirstMessage(character)
   const systemPrompt = generateQuizPrompt(character, questions)
 
   return (
     <div className="grid grid-cols-[.6fr_.4fr]">
-      <CallInterface character={character} systemPrompt={systemPrompt} firstMessage={firstMessage} />
+      <CallInterface character={character} systemPrompt={systemPrompt} firstMessage={firstMessage} backHref="/app/quizzes" />
       <Display character={character} userImage={userImage} systemPrompt={systemPrompt} firstMessage={firstMessage} />
     </div>
   )

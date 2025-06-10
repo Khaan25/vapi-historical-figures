@@ -6,22 +6,26 @@ import { HistoricalFigure } from '@/types'
 import { ArrowLeft } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+import { useUserId } from '@/hooks/use-user-id'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { buttonVariants } from '@/components/ui/button'
 
 import { useVapi } from '../hooks/useVapi'
 import { CALL_STATUS, VapiCallProps } from '../types'
 import { AssistantButton } from './assistantButton'
+import { FeedbackButton } from './feedback-button'
 import Siri from './siri'
 
 type CallInterfaceProps = VapiCallProps & {
   character: HistoricalFigure
+  backHref: string
+  children?: React.ReactNode
 }
 
-export const CallInterface = ({ character, systemPrompt, firstMessage }: CallInterfaceProps) => {
+export const CallInterface = ({ character, systemPrompt, firstMessage, backHref, children }: CallInterfaceProps) => {
   const [callDuration, setCallDuration] = useState(0)
-
-  const { toggleCall, callStatus, audioLevel } = useVapi({ character, systemPrompt, firstMessage })
+  const { toggleCall, callStatus, audioLevel, messages } = useVapi({ character, systemPrompt, firstMessage })
+  const { userId, isLoading: userIdLoading, error: userIdError } = useUserId()
 
   // Timer for call duration
   useEffect(() => {
@@ -51,7 +55,7 @@ export const CallInterface = ({ character, systemPrompt, firstMessage }: CallInt
 
   return (
     <div className="min-h-screen relative bg-muted text-muted-foreground flex flex-col justify-between">
-      <Link href="/app" className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'rounded-full absolute top-4 left-4')}>
+      <Link href={backHref} className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'rounded-full absolute top-4 left-4')}>
         <ArrowLeft className="size-4" />
       </Link>
 
@@ -76,6 +80,8 @@ export const CallInterface = ({ character, systemPrompt, firstMessage }: CallInt
         {callStatus === CALL_STATUS.INACTIVE && <p className="text-muted-foreground">Call ended</p>}
 
         <Siri theme="ios9" audioLevel={audioLevel} callStatus={callStatus} />
+
+        {children}
       </div>
 
       {/* Bottom action Buttons */}
@@ -100,8 +106,8 @@ export const CallInterface = ({ character, systemPrompt, firstMessage }: CallInt
             {isMuted ? <MicOff className="size-5" /> : <Mic className="size-5" />}
           </Button> */}
 
-          {/* End call Button */}
-          <AssistantButton toggleCall={toggleCall} callStatus={callStatus} />
+          <FeedbackButton userId={userId} messages={messages} characterId={character.id} userIdLoading={userIdLoading} userIdError={userIdError} callStatus={callStatus} />
+          <AssistantButton onClick={toggleCall} callStatus={callStatus} />
         </div>
       </div>
 

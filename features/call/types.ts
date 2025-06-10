@@ -8,3 +8,8 @@ export enum CALL_STATUS {
   ACTIVE = 'active',
   LOADING = 'loading',
 }
+
+export type TranscriptMessage = {
+  speaker: 'user' | 'assistant'
+  transcript: string
+}
