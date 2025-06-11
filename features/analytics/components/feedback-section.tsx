@@ -18,9 +18,9 @@ export function FeedbackSection({ historicalFigures }: FeedbackSectionProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
       {/* Historical Figures List */}
-      <Card className="lg:col-span-1">
+      <Card className="lg:col-span-1 py-0">
         <div className="p-4 border-b">
-          <h3 className="font-semibold">Historical Figures</h3>
+          <h3 className="font-semibold">Characters</h3>
         </div>
         <ScrollArea className="h-[600px]">
           <div className="p-4 space-y-4">
@@ -56,7 +56,7 @@ export function FeedbackSection({ historicalFigures }: FeedbackSectionProps) {
 
       {/* Feedback Details - Desktop */}
       {!isMobile && (
-        <Card className="lg:col-span-3">
+        <Card className="lg:col-span-3 py-0">
           <div className="p-4 border-b">
             <h3 className="font-semibold">Interview Feedback</h3>
           </div>
