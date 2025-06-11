@@ -4,10 +4,28 @@ import { useEffect, useState } from 'react'
 
 import { useMediaQuery } from '@/hooks/use-media-query'
 
-import { getHistoricalFiguresWithFeedback } from '../queries'
+export type CategoryScore = {
+  name: string
+  score: number
+  comment: string
+}
 
-type QueryResult = Awaited<ReturnType<typeof getHistoricalFiguresWithFeedback>>
-export type HistoricalFigureWithFeedback = NonNullable<QueryResult['data']> extends (infer T)[] ? T : never
+export type HistoricalFigureWithFeedback = {
+  id: string
+  name: string
+  imageUrl: string
+  feedbacks: Array<{
+    feedbackId: string
+    quizId: string
+    totalScore: number
+    categoryScores: CategoryScore[]
+    strengths: string[]
+    areasForImprovement: string[]
+    finalAssessment: string
+    createdAt: string
+  }>
+}
+
 export type Feedback = HistoricalFigureWithFeedback['feedbacks'][number]
 
 export function useFeedbackState(historicalFigures: HistoricalFigureWithFeedback[]) {

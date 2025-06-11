@@ -41,9 +41,21 @@ export const getFeedbackAnalytics = async () => {
     // Calculate category scores average
     const categoryScoresAvg =
       feedbacks.reduce((acc, curr) => {
-        const scores = Object.values(curr.categoryScores as Record<string, number>)
-        return acc + scores.reduce((sum, score) => sum + score, 0) / scores.length
-      }, 0) / feedbacks.length
+        try {
+          const categoryScores = typeof curr.categoryScores === 'string' ? JSON.parse(curr.categoryScores) : curr.categoryScores
+
+          // Handle array of score objects
+          if (Array.isArray(categoryScores)) {
+            const scores = categoryScores.map((item) => item.score)
+            if (scores.length === 0) return acc
+            return acc + scores.reduce((sum, score) => sum + score, 0) / scores.length
+          }
+          return acc
+        } catch (e) {
+          console.error('Error parsing categoryScores:', e)
+          return acc
+        }
+      }, 0) / (feedbacks.length || 1)
     analytics.categoryScores.value = Number(categoryScoresAvg.toFixed(1))
 
     // Calculate unique strengths count
@@ -71,14 +83,38 @@ export const getFeedbackAnalytics = async () => {
       // Category scores trend
       const oldCategoryAvg =
         oldFeedbacks.reduce((acc, curr) => {
-          const scores = Object.values(curr.categoryScores as Record<string, number>)
-          return acc + scores.reduce((sum, score) => sum + score, 0) / scores.length
-        }, 0) / oldFeedbacks.length
+          try {
+            const categoryScores = typeof curr.categoryScores === 'string' ? JSON.parse(curr.categoryScores) : curr.categoryScores
+
+            // Handle array of score objects
+            if (Array.isArray(categoryScores)) {
+              const scores = categoryScores.map((item) => item.score)
+              if (scores.length === 0) return acc
+              return acc + scores.reduce((sum, score) => sum + score, 0) / scores.length
+            }
+            return acc
+          } catch (e) {
+            console.error('Error parsing categoryScores in old feedbacks:', e)
+            return acc
+          }
+        }, 0) / (oldFeedbacks.length || 1)
       const recentCategoryAvg =
         recentFeedbacks.reduce((acc, curr) => {
-          const scores = Object.values(curr.categoryScores as Record<string, number>)
-          return acc + scores.reduce((sum, score) => sum + score, 0) / scores.length
-        }, 0) / recentFeedbacks.length
+          try {
+            const categoryScores = typeof curr.categoryScores === 'string' ? JSON.parse(curr.categoryScores) : curr.categoryScores
+
+            // Handle array of score objects
+            if (Array.isArray(categoryScores)) {
+              const scores = categoryScores.map((item) => item.score)
+              if (scores.length === 0) return acc
+              return acc + scores.reduce((sum, score) => sum + score, 0) / scores.length
+            }
+            return acc
+          } catch (e) {
+            console.error('Error parsing categoryScores in recent feedbacks:', e)
+            return acc
+          }
+        }, 0) / (recentFeedbacks.length || 1)
       const categoryScoreTrend = ((recentCategoryAvg - oldCategoryAvg) / oldCategoryAvg) * 100
       analytics.categoryScores.trend = {
         value: `${Math.abs(categoryScoreTrend).toFixed(1)}%`,
@@ -155,7 +191,7 @@ export const getHistoricalFiguresWithFeedback = async () => {
         feedbackId: f.id,
         quizId: f.quizId,
         totalScore: f.totalScore,
-        categoryScores: JSON.parse(f.categoryScores as string) as Record<string, number>,
+        categoryScores: JSON.parse(f.categoryScores as string) as Array<{ name: string; score: number; comment: string }>,
         strengths: JSON.parse(f.strengths as string) as string[],
         areasForImprovement: JSON.parse(f.areasForImprovement as string) as string[],
         finalAssessment: f.finalAssessment,

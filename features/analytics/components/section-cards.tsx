@@ -15,6 +15,8 @@ export const SectionCards = async () => {
   if (!analytics) {
     return <div>No analytics data available</div>
   }
+  
+  console.log('analytics :', analytics);
 
   const cards = [
     {

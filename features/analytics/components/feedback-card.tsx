@@ -25,7 +25,7 @@ interface FeedbackCardProps {
 
 export function FeedbackCard({ figure, feedback, asSheet }: FeedbackCardProps) {
   const badge = getBadgeForScore(feedback.totalScore)
-  const categoryScores = feedback.categoryScores as Record<string, number>
+  const categoryScores = feedback.categoryScores as Array<{ name: string; score: number; comment: string }>
   const strengths = feedback.strengths as string[]
   const areasForImprovement = feedback.areasForImprovement as string[]
 
@@ -49,10 +49,10 @@ export function FeedbackCard({ figure, feedback, asSheet }: FeedbackCardProps) {
         <div>
           <h5 className="font-medium mb-2">Category Scores</h5>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            {Object.entries(categoryScores).map(([category, score]) => (
-              <Card key={category} className="p-4">
-                <p className="text-sm text-muted-foreground capitalize">{category}</p>
-                <p className="text-xl font-bold">{score}%</p>
+            {categoryScores.map((category) => (
+              <Card key={category.name} className="p-4">
+                <p className="text-sm text-muted-foreground">{category.name}</p>
+                <p className="text-xl font-bold">{category.score}%</p>
               </Card>
             ))}
           </div>
