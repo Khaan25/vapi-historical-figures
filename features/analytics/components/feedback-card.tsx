@@ -6,9 +6,8 @@ import { cn } from '@/lib/utils'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Card } from '@/components/ui/card'
 
-import { type Feedback, type HistoricalFigureWithFeedback } from '../hooks/use-feedback-state'
+import { type FeedbackWithFigure } from '../hooks/use-feedback-state'
 
 function getBadgeForScore(score: number) {
   if (score >= 95) return { label: 'Platinum', className: 'bg-purple-500 hover:bg-purple-600' }
@@ -18,26 +17,22 @@ function getBadgeForScore(score: number) {
 }
 
 interface FeedbackCardProps {
-  figure: HistoricalFigureWithFeedback
-  feedback: Feedback
+  feedback: FeedbackWithFigure
   asSheet?: boolean
 }
 
-export function FeedbackCard({ figure, feedback, asSheet }: FeedbackCardProps) {
+export function FeedbackCard({ feedback, asSheet }: FeedbackCardProps) {
   const badge = getBadgeForScore(feedback.totalScore)
-  const categoryScores = feedback.categoryScores as Array<{ name: string; score: number; comment: string }>
-  const strengths = feedback.strengths as string[]
-  const areasForImprovement = feedback.areasForImprovement as string[]
 
   return (
     <div className={cn('w-full', !asSheet && 'mb-6')}>
-      <div className="flex items-center space-x-4 mb-4">
+      <div className="flex items-center space-x-4 mb-6">
         <Avatar>
-          <AvatarImage src={figure.imageUrl} alt={figure.name} />
-          <AvatarFallback>{figure.name[0]}</AvatarFallback>
+          <AvatarImage src={feedback.figure.imageUrl} alt={feedback.figure.name} />
+          <AvatarFallback>{feedback.figure.name[0]}</AvatarFallback>
         </Avatar>
         <div>
-          <h4 className="font-semibold">{figure.name}</h4>
+          <h4 className="font-semibold">{feedback.figure.name}</h4>
           <div className="flex space-x-2">
             <Badge className={badge.className}>{badge.label}</Badge>
             <p className="text-sm text-muted-foreground">{format(new Date(feedback.createdAt), 'MMM d, yyyy')}</p>
@@ -45,53 +40,54 @@ export function FeedbackCard({ figure, feedback, asSheet }: FeedbackCardProps) {
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div>
-          <h5 className="font-medium mb-2">Category Scores</h5>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            {categoryScores.map((category) => (
-              <Card key={category.name} className="p-4">
-                <p className="text-sm text-muted-foreground">{category.name}</p>
-                <p className="text-xl font-bold">{category.score}%</p>
-              </Card>
-            ))}
-          </div>
+          <h5 className="font-semibold mb-2">Final Assessment</h5>
+          <p className="text-sm text-muted-foreground">{feedback.finalAssessment}</p>
         </div>
 
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="strengths">
-            <AccordionTrigger>Strengths</AccordionTrigger>
-            <AccordionContent>
-              <ul className="list-disc pl-5 space-y-1">
-                {strengths.map((strength, index) => (
-                  <li key={index} className="text-sm">
-                    {strength}
-                  </li>
-                ))}
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
+        <div>
+          <h5 className="font-semibold mb-2">Category Scores</h5>
+          <Accordion type="single" collapsible className="w-full">
+            {feedback.categoryScores.map((category, index) => (
+              <AccordionItem key={index} value={`item-${index}`}>
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="flex items-center justify-between w-full pr-4">
+                    <span>{category.name}</span>
+                    <Badge variant={category.score >= 90 ? 'default' : 'secondary'}>{category.score}%</Badge>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm text-muted-foreground pt-2">{category.comment}</p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
 
-          <AccordionItem value="improvements">
-            <AccordionTrigger>Areas for Improvement</AccordionTrigger>
-            <AccordionContent>
-              <ul className="list-disc pl-5 space-y-1">
-                {areasForImprovement.map((area, index) => (
-                  <li key={index} className="text-sm">
-                    {area}
-                  </li>
-                ))}
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h5 className="font-semibold mb-2">Strengths</h5>
+            <ul className="list-disc list-inside space-y-1">
+              {feedback.strengths.map((strength, index) => (
+                <li key={index} className="text-sm text-muted-foreground">
+                  {strength}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <AccordionItem value="assessment">
-            <AccordionTrigger>Final Assessment</AccordionTrigger>
-            <AccordionContent>
-              <p className="text-sm">{feedback.finalAssessment}</p>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+          <div>
+            <h5 className="font-semibold mb-2">Areas for Improvement</h5>
+            <ul className="list-disc list-inside space-y-1">
+              {feedback.areasForImprovement.map((area, index) => (
+                <li key={index} className="text-sm text-muted-foreground">
+                  {area}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   )

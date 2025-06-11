@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Loader2, MessageSquare } from 'lucide-react'
 
 import { Message } from '@/types/conversation.type'
@@ -30,7 +30,7 @@ export const FeedbackButton = ({ userId, messages, characterId, userIdLoading, u
     try {
       setIsLoading(true)
       await generateFeedbackAction(messages, characterId)
-      // router.push(`/app/quizzes/${characterId}/feedback`)
+      router.push(`/app/analytics`)
     } catch (error) {
       console.error('Error generating feedback:', error)
     } finally {

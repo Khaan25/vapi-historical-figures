@@ -20,9 +20,10 @@ type CallInterfaceProps = VapiCallProps & {
   character: HistoricalFigure
   backHref: string
   children?: React.ReactNode
+  isQuiz?: boolean
 }
 
-export const CallInterface = ({ character, systemPrompt, firstMessage, backHref, children }: CallInterfaceProps) => {
+export const CallInterface = ({ character, systemPrompt, firstMessage, backHref, children, isQuiz }: CallInterfaceProps) => {
   const [callDuration, setCallDuration] = useState(0)
   const { toggleCall, callStatus, audioLevel, messages } = useVapi({ character, systemPrompt, firstMessage })
   const { userId, isLoading: userIdLoading, error: userIdError } = useUserId()
@@ -106,7 +107,7 @@ export const CallInterface = ({ character, systemPrompt, firstMessage, backHref,
             {isMuted ? <MicOff className="size-5" /> : <Mic className="size-5" />}
           </Button> */}
 
-          <FeedbackButton userId={userId} messages={messages} characterId={character.id} userIdLoading={userIdLoading} userIdError={userIdError} callStatus={callStatus} />
+          {isQuiz && <FeedbackButton userId={userId} messages={messages} characterId={character.id} userIdLoading={userIdLoading} userIdError={userIdError} callStatus={callStatus} />}
           <AssistantButton onClick={toggleCall} callStatus={callStatus} />
         </div>
       </div>

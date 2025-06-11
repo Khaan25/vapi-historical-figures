@@ -48,7 +48,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="grid grid-cols-[.6fr_.4fr]">
-      <CallInterface character={character} systemPrompt={systemPrompt} firstMessage={firstMessage} backHref="/app/quizzes" />
+      <CallInterface character={character} systemPrompt={systemPrompt} firstMessage={firstMessage} backHref="/app/quizzes" isQuiz />
       <Display character={character} userImage={userImage} systemPrompt={systemPrompt} firstMessage={firstMessage} />
     </div>
   )

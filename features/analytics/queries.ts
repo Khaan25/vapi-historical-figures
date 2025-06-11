@@ -145,64 +145,155 @@ export const getFeedbackAnalytics = async () => {
 export const getHistoricalFiguresWithFeedback = async () => {
   const supabase = await createClient()
 
-  // First get all historical figures
-  const { data: figures, error: figuresError } = await supabase.from('historicalFigures').select('id, name, imageUrl').order('name')
+  try {
+    // First get all historical figures
+    const { data: figures, error: figuresError } = await supabase.from('historicalFigures').select('id, name, imageUrl').order('name')
 
-  if (figuresError) {
-    return {
-      data: null,
-      error: figuresError.message,
+    if (figuresError) {
+      console.error('Error fetching figures:', figuresError)
+      return {
+        data: null,
+        error: figuresError.message,
+      }
     }
-  }
 
-  // Then get all feedbacks
-  const { data: feedbacks, error: feedbacksError } = await supabase
-    .from('feedbacks')
-    .select(
+    if (!figures || figures.length === 0) {
+      console.log('No historical figures found')
+      return {
+        data: [],
+        error: null,
+      }
+    }
+
+    // Then get all feedbacks
+    const { data: feedbacks, error: feedbacksError } = await supabase
+      .from('feedbacks')
+      .select(
+        `
+        id,
+        quizId,
+        totalScore,
+        categoryScores,
+        strengths,
+        areasForImprovement,
+        finalAssessment,
+        createdAt,
+        quizzes (
+          historicalFigureId
+        )
       `
-      id,
-      quizId,
-      totalScore,
-      categoryScores,
-      strengths,
-      areasForImprovement,
-      finalAssessment,
-      createdAt,
-      quizzes (
-        historicalFigureId
       )
-    `
-    )
-    .order('createdAt', { ascending: false })
+      .order('createdAt', { ascending: false })
 
-  if (feedbacksError) {
+    if (feedbacksError) {
+      console.error('Error fetching feedbacks:', feedbacksError)
+      return {
+        data: null,
+        error: feedbacksError.message,
+      }
+    }
+
+    if (!feedbacks || feedbacks.length === 0) {
+      console.log('No feedbacks found')
+      return {
+        data: [],
+        error: null,
+      }
+    }
+
+    console.log('Raw feedbacks:', feedbacks)
+
+    // Map feedbacks to include their historical figure data
+    const feedbacksWithFigures = feedbacks
+      .map((feedback) => {
+        const figure = figures.find((f) => f.id === feedback.quizzes?.historicalFigureId)
+        if (!figure) {
+          console.log('No figure found for feedback:', feedback)
+          return null
+        }
+
+        try {
+          // Ensure all JSON fields are properly parsed
+          let categoryScores
+          let strengths
+          let areasForImprovement
+
+          try {
+            categoryScores = JSON.parse(feedback.categoryScores as string)
+            if (!Array.isArray(categoryScores)) {
+              throw new Error('categoryScores is not an array')
+            }
+          } catch (e) {
+            console.error('Error parsing categoryScores:', e)
+            categoryScores = []
+          }
+
+          try {
+            strengths = JSON.parse(feedback.strengths as string)
+            if (!Array.isArray(strengths)) {
+              throw new Error('strengths is not an array')
+            }
+          } catch (e) {
+            console.error('Error parsing strengths:', e)
+            strengths = []
+          }
+
+          try {
+            areasForImprovement = JSON.parse(feedback.areasForImprovement as string)
+            if (!Array.isArray(areasForImprovement)) {
+              throw new Error('areasForImprovement is not an array')
+            }
+          } catch (e) {
+            console.error('Error parsing areasForImprovement:', e)
+            areasForImprovement = []
+          }
+
+          const parsedFeedback = {
+            feedbackId: feedback.id,
+            quizId: feedback.quizId,
+            totalScore: feedback.totalScore,
+            categoryScores,
+            strengths,
+            areasForImprovement,
+            finalAssessment: feedback.finalAssessment || '',
+            createdAt: feedback.createdAt,
+            figure: {
+              id: figure.id,
+              name: figure.name,
+              imageUrl: figure.imageUrl,
+            },
+          }
+
+          // Validate the structure
+          if (
+            typeof parsedFeedback.totalScore !== 'number' ||
+            !Array.isArray(parsedFeedback.categoryScores) ||
+            !Array.isArray(parsedFeedback.strengths) ||
+            !Array.isArray(parsedFeedback.areasForImprovement)
+          ) {
+            console.error('Invalid feedback structure:', parsedFeedback)
+            return null
+          }
+
+          return parsedFeedback
+        } catch (error) {
+          console.error('Error parsing feedback data:', error, feedback)
+          return null
+        }
+      })
+      .filter((f): f is NonNullable<typeof f> => f !== null)
+
+    console.log('Processed feedbacks:', feedbacksWithFigures)
+
+    return {
+      data: feedbacksWithFigures,
+      error: null,
+    }
+  } catch (error) {
+    console.error('Unexpected error:', error)
     return {
       data: null,
-      error: feedbacksError.message,
+      error: 'An unexpected error occurred while fetching feedback data',
     }
-  }
-
-  // Map feedbacks to their historical figures
-  const figuresWithFeedback = figures.map((figure) => ({
-    ...figure,
-    feedbacks: feedbacks
-      .filter((f) => f.quizzes?.historicalFigureId === figure.id)
-      .map((f) => ({
-        feedbackId: f.id,
-        quizId: f.quizId,
-        totalScore: f.totalScore,
-        categoryScores: JSON.parse(f.categoryScores as string) as Array<{ name: string; score: number; comment: string }>,
-        strengths: JSON.parse(f.strengths as string) as string[],
-        areasForImprovement: JSON.parse(f.areasForImprovement as string) as string[],
-        finalAssessment: f.finalAssessment,
-        createdAt: f.createdAt,
-      })),
-  }))
-
-  console.log('figuresWithFeedback :', figuresWithFeedback)
-
-  return {
-    data: figuresWithFeedback.filter((f) => f.feedbacks.length > 0), // Only return figures that have feedback
-    error: null,
   }
 }
