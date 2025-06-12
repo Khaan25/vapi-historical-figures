@@ -13,7 +13,7 @@ export function BentoGrid({ className, ...props }: ComponentProps<'div'>) {
         </div>
         <div className="bg-white/20 p-4 rounded-lg group-hover:scale-95 transition-transform duration-300">
           <Image
-            src="https://glasto-astro.vercel.app/_astro/1.yjkZS00e_2jdGcP.webp"
+            src="/scientist.png"
             alt="Historical figure conversation"
             width={512}
             height={334}
@@ -65,11 +65,11 @@ export function BentoGrid({ className, ...props }: ComponentProps<'div'>) {
         </div>
         <div className="flex justify-between bg-white/20 p-4 rounded-lg">
           <Image
-            src="https://glasto-astro.vercel.app/_astro/1.yjkZS00e_2jdGcP.webp"
+            src="/dialog.png"
             alt="Historical conversation interface"
             width={200}
             height={240}
-            className="w-full rounded-md transition-transform duration-300 group-hover:translate-y-2"
+            className="w-full rounded-md max-h-52 object-cover object-top transition-transform duration-300 group-hover:translate-y-2"
           />
         </div>
       </div>

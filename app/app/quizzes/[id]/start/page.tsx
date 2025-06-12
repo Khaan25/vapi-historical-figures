@@ -5,6 +5,7 @@ import { getQuizQuestions } from '@/features/quiz/actions'
 import { createClient } from '@/utils/supabase/server'
 
 import { generateQuizFirstMessage, generateQuizPrompt } from '@/lib/prompt'
+import { redirect } from 'next/navigation'
 
 type PageProps = {
   params: Promise<{
@@ -28,7 +29,7 @@ export default async function Page({ params }: PageProps) {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return <div>User not found</div>
+    return redirect('/auth/sign-in')
   }
 
   const userImage = user?.user_metadata.avatar_url as string

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, MessageSquare } from 'lucide-react'
 
@@ -37,6 +37,13 @@ export const FeedbackButton = ({ userId, messages, characterId, userIdLoading, u
       setIsLoading(false)
     }
   }
+
+  // If the call is inactive and the feedback is not loading, generate the feedback
+  useEffect(() => {
+    if (callStatus === CALL_STATUS.INACTIVE && !isLoading) {
+      handleGenerateFeedback()
+    }
+  }, [callStatus])
 
   return (
     <Button
