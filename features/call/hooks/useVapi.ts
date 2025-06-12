@@ -108,11 +108,12 @@ export function useVapi({ character, systemPrompt, firstMessage }: UseVapiProps)
 
   const start = async () => {
     setCallStatus(CALL_STATUS.LOADING)
-    const response = vapi.start(assistant as CreateAssistantDTO)
+    // const response = vapi.start(assistant as CreateAssistantDTO)
+    vapi.start(assistant as CreateAssistantDTO)
 
-    response.then((res) => {
-      console.log('call', res)
-    })
+    // response.then((res) => {
+    // console.log('call', res)
+    // })
   }
 
   const stop = () => {
