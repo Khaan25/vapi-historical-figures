@@ -70,7 +70,7 @@ export const SectionCards = async () => {
       {cards.map((card) => {
         const Icon = card.icon
         return (
-          <Card key={card.title} className={`@container/card relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-lg ${card.gradient} bg-gradient-to-br`}>
+          <Card key={card.title} className={`@container/card relative overflow-hidden shadow-none transition-all duration-300 hover:scale-[1.02] hover:shadow-lg ${card.gradient} bg-gradient-to-br`}>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardDescription className="text-base font-medium">{card.title}</CardDescription>

@@ -20,10 +20,9 @@ function getBadgeForScore(score: number) {
 
 interface FeedbackCardProps {
   feedback: FeedbackWithFigure
-  asSheet?: boolean
 }
 
-export function FeedbackCard({ feedback, asSheet }: FeedbackCardProps) {
+export function FeedbackCard({ feedback }: FeedbackCardProps) {
   const badge = getBadgeForScore(feedback.totalScore)
 
   return (

@@ -134,7 +134,7 @@ export function FeedbackSection({ feedbacks }: FeedbackSectionProps) {
             </SheetHeader>
             <div className="px-4 mt-4">
               {selectedFeedback ? (
-                <FeedbackCard feedback={selectedFeedback} asSheet />
+                <FeedbackCard feedback={selectedFeedback} />
               ) : (
                 <div className="flex flex-col items-center justify-center h-full p-6 text-center">
                   <Scroll className="size-12 text-muted-foreground/50 mb-4" />
