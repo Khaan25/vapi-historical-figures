@@ -52,7 +52,15 @@ export function QuizCharactersList({ figures }: QuizCharactersListProps) {
 
       <div className={cn(viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' : 'space-y-4')}>
         {filteredFigures.map((figure) => (
-          <HistoricalCardView key={figure.id} figure={figure}>
+          <HistoricalCardView
+            key={figure.id}
+            figure={{
+              badge: figure.category,
+              imageUrl: figure.imageUrl,
+              name: figure.name,
+              description: figure.description,
+            }}
+          >
             <QuizTypeModal figure={figure} />
           </HistoricalCardView>
         ))}
