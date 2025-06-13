@@ -1,7 +1,9 @@
 'use client'
 
 import { format } from 'date-fns'
+import { Scroll } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
@@ -27,8 +29,14 @@ export function FeedbackSection({ feedbacks }: FeedbackSectionProps) {
 
   if (!feedbacks || feedbacks.length === 0) {
     return (
-      <Card className="p-6 text-center">
-        <p className="text-muted-foreground">No feedback data available. Complete some interviews to see feedback here.</p>
+      <Card className="p-8 text-center bg-gradient-to-br from-amber-500/10 to-amber-500/5">
+        <div className="flex flex-col items-center gap-4">
+          <Scroll className="size-12 text-muted-foreground/50" />
+          <div>
+            <p className="text-lg font-semibold mb-2">No Feedback Available</p>
+            <p className="text-muted-foreground">Complete some interviews to see your feedback here.</p>
+          </div>
+        </div>
       </Card>
     )
   }
@@ -36,35 +44,49 @@ export function FeedbackSection({ feedbacks }: FeedbackSectionProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
       {/* Feedback List */}
-      <Card className="lg:col-span-1 gap-0 py-0">
+      <Card className="lg:col-span-1 gap-0 py-0 bg-gradient-to-br from-blue-500/10 to-blue-500/5">
         <div className="p-4 border-b">
-          <h3 className="font-semibold">Recent Interviews</h3>
+          <h3 className="font-semibold flex items-center gap-2">
+            <Scroll className="size-5" />
+            Recent Interviews
+          </h3>
           <p className="text-sm text-muted-foreground mt-1">{feedbacks.length} total</p>
         </div>
-        <ScrollArea className="h-[600px]">
+        <ScrollArea className="h-[500px]">
           <div className="p-4 space-y-4">
             {feedbacks.map((feedback) => {
               const badge = getBadgeForScore(feedback.totalScore)
               return (
                 <div
                   key={feedback.feedbackId}
-                  className="flex items-center space-x-4 p-2 rounded-lg hover:bg-accent cursor-pointer"
+                  className={cn(
+                    'group flex items-center space-x-4 p-3 rounded-lg cursor-pointer transition-all duration-300',
+                    selectedFeedback?.feedbackId === feedback.feedbackId ? 'bg-primary/10 hover:bg-primary/15 shadow-md ring-1 ring-primary/20' : 'hover:bg-accent hover:shadow-md'
+                  )}
                   onClick={() => {
-                    console.log('Selecting feedback:', feedback.feedbackId)
                     setSelectedFeedbackId(feedback.feedbackId)
                     if (isMobile) {
                       setIsSheetOpen(true)
                     }
                   }}
                 >
-                  <Avatar>
-                    <AvatarImage src={feedback.figure.imageUrl} alt={feedback.figure.name} />
-                    <AvatarFallback>{feedback.figure.name[0]}</AvatarFallback>
-                  </Avatar>
+                  <div className="relative">
+                    <Avatar
+                      className={cn(
+                        'size-12 ring-2 ring-offset-2 ring-offset-background transition-all duration-300',
+                        selectedFeedback?.feedbackId === feedback.feedbackId ? 'ring-primary' : 'ring-border group-hover:ring-primary'
+                      )}
+                    >
+                      <AvatarImage src={feedback.figure.imageUrl} alt={feedback.figure.name} />
+                      <AvatarFallback>{feedback.figure.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <Badge className={`${badge.className} absolute -bottom-2 -right-2 size-6 rounded-full flex items-center justify-center p-0 text-xs font-bold shadow-lg`}>
+                      {feedback.totalScore}
+                    </Badge>
+                  </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">{feedback.figure.name}</p>
+                    <p className={cn('font-medium truncate', selectedFeedback?.feedbackId === feedback.feedbackId && 'text-primary')}>{feedback.figure.name}</p>
                     <div className="flex items-center space-x-2">
-                      <Badge className={badge.className}>{badge.label}</Badge>
                       <p className="text-sm text-muted-foreground">{format(new Date(feedback.createdAt), 'MMM d, yyyy')}</p>
                     </div>
                   </div>
@@ -77,13 +99,24 @@ export function FeedbackSection({ feedbacks }: FeedbackSectionProps) {
 
       {/* Feedback Details - Desktop */}
       {!isMobile && (
-        <Card className="lg:col-span-3 gap-0 py-0">
+        <Card className="lg:col-span-3 gap-0 py-0 bg-gradient-to-br from-purple-500/10 to-purple-500/5">
           <div className="p-4 border-b">
-            <h3 className="font-semibold">Interview Feedback</h3>
+            <h3 className="font-semibold flex items-center gap-2">
+              <Scroll className="size-5" />
+              Interview Feedback
+            </h3>
           </div>
-          <ScrollArea className="h-[585px]">
-            <div className="p-4">
-              {selectedFeedback ? <FeedbackCard feedback={selectedFeedback} /> : <div className="text-center p-6 text-muted-foreground">Select a feedback entry to view details</div>}
+          <ScrollArea className="h-[485px]">
+            <div className="p-6">
+              {selectedFeedback ? (
+                <FeedbackCard feedback={selectedFeedback} />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full p-6 text-center">
+                  <Scroll className="size-12 text-muted-foreground/50 mb-4" />
+                  <p className="text-lg font-semibold mb-2">Select an Interview</p>
+                  <p className="text-muted-foreground">Choose an interview from the list to view feedback</p>
+                </div>
+              )}
             </div>
           </ScrollArea>
         </Card>
@@ -94,10 +127,21 @@ export function FeedbackSection({ feedbacks }: FeedbackSectionProps) {
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetContent side="bottom" className="h-[85vh] overflow-auto pb-10">
             <SheetHeader>
-              <SheetTitle>Interview Feedback</SheetTitle>
+              <SheetTitle className="flex items-center gap-2">
+                <Scroll className="size-5" />
+                Interview Feedback
+              </SheetTitle>
             </SheetHeader>
-            <div className="px-4">
-              {selectedFeedback ? <FeedbackCard feedback={selectedFeedback} asSheet /> : <div className="text-center p-6 text-muted-foreground">Select a feedback entry to view details</div>}
+            <div className="px-4 mt-4">
+              {selectedFeedback ? (
+                <FeedbackCard feedback={selectedFeedback} asSheet />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full p-6 text-center">
+                  <Scroll className="size-12 text-muted-foreground/50 mb-4" />
+                  <p className="text-lg font-semibold mb-2">Select an Interview</p>
+                  <p className="text-muted-foreground">Choose an interview from the list to view feedback</p>
+                </div>
+              )}
             </div>
           </SheetContent>
         </Sheet>

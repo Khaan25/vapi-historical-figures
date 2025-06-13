@@ -15,8 +15,8 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">EP</div>
-          <span className="font-semibold leading-none">Echoes of the Past</span>
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">TW</div>
+          <span className="font-semibold leading-none">TimeWhispers</span>
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>
