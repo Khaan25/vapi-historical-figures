@@ -9,11 +9,8 @@ export const metadata: Metadata = {
 }
 
 const features = [
-  'Unique voice selection for each historical figure',
   'Adjustable speaking style (casual to formal)',
   'Tone customization (serious to conversational)',
-  'Period-appropriate speech patterns',
-  'Add an option to upload custom voices',
   'Automate the process of adding historical figures from Wikipedia',
 ]
 
