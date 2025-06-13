@@ -13,6 +13,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { useVapi } from '../hooks/useVapi'
 import { CALL_STATUS, VapiCallProps } from '../types'
 import { AssistantButton } from './assistantButton'
+import { CallHelperText } from './call-helper-text'
 import { FeedbackButton } from './feedback-button'
 import Siri from './siri'
 
@@ -25,8 +26,33 @@ type CallInterfaceProps = VapiCallProps & {
 
 export const CallInterface = ({ character, systemPrompt, firstMessage, backHref, children, isQuiz }: CallInterfaceProps) => {
   const [callDuration, setCallDuration] = useState(0)
-  const { toggleCall, callStatus, audioLevel, messages } = useVapi({ character, systemPrompt, firstMessage })
+  const { toggleCall, callStatus, audioLevel, messages, askQuestion } = useVapi({ character, systemPrompt, firstMessage })
   const { userId, isLoading: userIdLoading, error: userIdError } = useUserId()
+
+  // Handle helper text option clicks
+  const handleOptionClick = (option: string) => {
+    switch (option) {
+      case 'Ask a question':
+        askQuestion("If you've a question? feel free to ask")
+        break
+      case 'Request Explanation':
+        askQuestion("I'd be happy to explain anything about me or my work. What would you like me to clarify?")
+        break
+      case 'Topic Discussion':
+        if (character.notableWork) {
+          const notableEvents = character.notableWork.split(',').slice(0, 2)
+          if (notableEvents[0] && notableEvents[1]) {
+            const message = `I see you're interested in a discussion! Here are two notable events from my life:\n\n1. ${notableEvents[0]}\n2. ${notableEvents[1]}\n\nWould you like to discuss one of these topics, or do you have something else in mind?`
+            askQuestion(message)
+          } else {
+            askQuestion("I see you're interested in a discussion! What topic would you like to explore together?")
+          }
+        } else {
+          askQuestion("I see you're interested in a discussion! What topic would you like to explore together?")
+        }
+        break
+    }
+  }
 
   // Timer for call duration
   useEffect(() => {
@@ -81,6 +107,8 @@ export const CallInterface = ({ character, systemPrompt, firstMessage, backHref,
         {callStatus === CALL_STATUS.INACTIVE && <p className="text-muted-foreground">Call ended</p>}
 
         <Siri theme="ios9" audioLevel={audioLevel} callStatus={callStatus} />
+
+        <CallHelperText title="Try to:" options={['Ask a question', 'Request Explanation', 'Topic Discussion']} onOptionClick={handleOptionClick} />
 
         {children}
       </div>

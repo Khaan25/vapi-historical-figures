@@ -121,6 +121,17 @@ export function useVapi({ character, systemPrompt, firstMessage }: UseVapiProps)
     vapi.stop()
   }
 
+  const askQuestion = (question: string) => {
+    console.log('question :', question)
+    vapi.send({
+      type: 'add-message',
+      message: {
+        role: 'system',
+        content: `The user has pressed a button for you to ask him ${question}.`,
+      },
+    })
+  }
+
   const toggleCall = () => {
     if (callStatus == CALL_STATUS.ACTIVE) {
       stop()
@@ -138,5 +149,6 @@ export function useVapi({ character, systemPrompt, firstMessage }: UseVapiProps)
     start,
     stop,
     toggleCall,
+    askQuestion,
   }
 }
