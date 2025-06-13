@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 import { AnalyticsCards } from '@/features/analytics/components/analytics-cards'
 import { FeedbackSection } from '@/features/analytics/components/feedback-section'
 import { getHistoricalFiguresWithFeedback } from '@/features/analytics/queries'
+import { ScreenHeader } from '@/components/common/screen-header'
+import { Screen } from '@/components/common/screen'
 
 export default async function AnalyticsPage() {
   const { data: feedbacks, error } = await getHistoricalFiguresWithFeedback()
@@ -55,7 +57,8 @@ export default async function AnalyticsPage() {
   }
 
   return (
-    <div className="@container/main container mx-auto p-6 space-y-6">
+    <Screen className="@container/main container mx-auto p-6 space-y-6">
+      <ScreenHeader title="Analytics" description="View analytics for the app." />
       <Suspense fallback={<div>Loading analytics...</div>}>
         <AnalyticsCards />
       </Suspense>
@@ -63,6 +66,6 @@ export default async function AnalyticsPage() {
       <Suspense fallback={<div>Loading feedback data...</div>}>
         <FeedbackSection feedbacks={feedbacks} />
       </Suspense>
-    </div>
+    </Screen>
   )
 }
