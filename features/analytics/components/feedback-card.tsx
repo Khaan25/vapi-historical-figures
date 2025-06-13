@@ -32,6 +32,7 @@ export function FeedbackCard({ feedback }: FeedbackCardProps) {
           <AvatarImage src={feedback.figure.imageUrl} alt={feedback.figure.name} />
           <AvatarFallback>{feedback.figure.name[0]}</AvatarFallback>
         </Avatar>
+
         <div className="space-y-2">
           <div className="space-y-1">
             <h4 className="text-xl font-semibold">{feedback.figure.name}</h4>
@@ -47,9 +48,9 @@ export function FeedbackCard({ feedback }: FeedbackCardProps) {
       </div>
 
       <div className="space-y-6">
-        <Card className="p-4 gap-2 bg-gradient-to-br from-blue-500/10 to-blue-500/5">
+        <Card className="p-4 gap-0 bg-gradient-to-br from-sky-500/5 to-sky-500/2 border-sky-500">
           <div className="flex items-center gap-2 mb-3">
-            <MessageCircle className="size-5 text-blue-500" />
+            <MessageCircle className="size-5 text-sky-500" />
             <h5 className="font-semibold">Overall Assessment</h5>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed">{feedback.finalAssessment}</p>
@@ -63,11 +64,16 @@ export function FeedbackCard({ feedback }: FeedbackCardProps) {
           <Accordion type="single" collapsible className="w-full">
             {feedback.categoryScores.map((category, index) => (
               <AccordionItem key={index} value={`item-${index}`} className="border-b-0 mb-2">
-                <Card className="bg-gradient-to-br from-purple-500/10 py-2 to-purple-500/5">
+                <Card className="bg-gradient-to-br to-purple-500/10 py-1 shadow-none from-purple-500/5 gap-2 border-purple-200">
                   <AccordionTrigger className="px-4 py-1.5 hover:no-underline [&[data-state=open]>div]:text-primary">
                     <div className="flex items-center justify-between w-full transition-colors">
                       <span className="font-medium">{category.name}</span>
-                      <Badge variant={category.score >= 90 ? 'default' : 'secondary'} className="ml-auto">
+                      <Badge variant="default" className={cn("ml-auto text-black",
+                        category.score >= 90 ? "text-white bg-green-500 hover:bg-green-600" :
+                        category.score >= 80 ? "text-white bg-yellow-500 hover:bg-yellow-600" :
+                        category.score >= 50 ? "text-white bg-orange-500 hover:bg-orange-600" :
+                        "bg-red-500 hover:bg-red-600 text-white"
+                      )}>
                         {category.score}%
                       </Badge>
                     </div>
@@ -82,30 +88,30 @@ export function FeedbackCard({ feedback }: FeedbackCardProps) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="p-4 bg-gradient-to-br gap-2 from-green-500/10 to-green-500/5">
+          <Card className="p-4 bg-gradient-to-br gap-2 from-green-500/5 to-green-500/2 border-green-300">
             <div className="flex items-center gap-2 mb-3">
               <Star className="size-5 text-green-500" />
               <h5 className="font-semibold">Strengths</h5>
             </div>
             <ul className="space-y-2">
               {feedback.strengths.map((strength, index) => (
-                <li key={index} className="text-sm text-muted-foreground flex gap-2 items-start">
-                  <span className="text-green-500 mt-1">•</span>
+                <li key={index} className="text-sm text-muted-foreground flex gap-2 items-center">
+                  <span className="text-green-500">•</span>
                   <span className="leading-relaxed">{strength}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card className="p-4 bg-gradient-to-br gap-2 from-orange-500/10 to-orange-500/5">
+          <Card className="p-4 bg-gradient-to-br gap-2 from-orange-500/5 to-orange-500/2 border-orange-300">
             <div className="flex items-center gap-2 mb-3">
               <Target className="size-5 text-orange-500" />
               <h5 className="font-semibold">Areas to Improve</h5>
             </div>
             <ul className="space-y-2">
               {feedback.areasForImprovement.map((area, index) => (
-                <li key={index} className="text-sm text-muted-foreground flex gap-2 items-start">
-                  <span className="text-orange-500 mt-1">•</span>
+                <li key={index} className="text-sm text-muted-foreground flex gap-2 items-center">
+                  <span className="text-orange-500">•</span>
                   <span className="leading-relaxed">{area}</span>
                 </li>
               ))}
