@@ -24,6 +24,8 @@ export const AnalyticsCards = async () => {
         message: analytics.totalScore.trend.direction === 'up' ? 'Performance improving' : 'Room for improvement',
         description: 'Overall interview performance',
       },
+      gradient: 'from-blue-500/10 to-blue-500/5',
+      border: 'border-blue-200',
     },
     {
       title: 'Category Score',
@@ -33,6 +35,8 @@ export const AnalyticsCards = async () => {
         message: analytics.categoryScores.trend.direction === 'up' ? 'Categories improving' : 'Areas to focus on',
         description: 'Average across all categories',
       },
+      gradient: 'from-emerald-500/10 to-emerald-500/5',
+      border: 'border-emerald-200',
     },
     {
       title: 'Strengths',
@@ -42,6 +46,8 @@ export const AnalyticsCards = async () => {
         message: analytics.strengthsCount.trend.direction === 'up' ? 'New strengths identified' : 'Consistent strengths',
         description: 'Key strong points',
       },
+      gradient: 'from-cyan-500/10 to-cyan-500/5',
+      border: 'border-cyan-200',
     },
     {
       title: 'Areas to Improve',
@@ -51,14 +57,16 @@ export const AnalyticsCards = async () => {
         message: analytics.areasToImprove.trend.direction === 'down' ? 'Fewer areas to improve' : 'Areas identified',
         description: 'Points to work on',
       },
+      gradient: 'from-purple-500/10 to-purple-500/5',
+      border: 'border-purple-200',
     },
   ]
 
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+    <div className="dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       {cards.map((card) => {
         return (
-          <Card key={card.title} className="@container/card">
+          <Card key={card.title} className={`@container/card bg-gradient-to-t ${card.gradient} shadow-xs dark:bg-card border ${card.border}`}>
             <CardHeader>
               <CardDescription>{card.title}</CardDescription>
               <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{card.value}</CardTitle>
