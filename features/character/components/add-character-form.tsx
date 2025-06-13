@@ -149,6 +149,8 @@ export function AddCharacterForm() {
   }
 
   const handleVoiceSelect = (voiceId: string, name: string) => {
+    console.log('name :', name)
+    console.log('voiceId :', voiceId)
     form.setValue('voiceId', voiceId)
     setSelectedVoiceName(name)
   }

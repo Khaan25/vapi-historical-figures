@@ -37,7 +37,7 @@ export function NotableWorksDialog({ isOpen, onClose, notableWorks, onSave }: No
             <Badge
               key={work}
               variant={selectedWorks.includes(work) ? 'default' : 'outline'}
-              className="cursor-pointer hover:bg-primary/90 hover:text-white transition-colors"
+              className="cursor-pointer line-clamp-1 max-w-[350px] truncate hover:bg-primary/90 hover:text-white transition-colors"
               onClick={() => handleToggleWork(work)}
             >
               {work}

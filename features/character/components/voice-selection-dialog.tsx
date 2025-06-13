@@ -23,6 +23,7 @@ interface VoiceSelectionDialogProps {
 
 export function VoiceSelectionDialog({ isOpen, onClose, onSelect }: VoiceSelectionDialogProps) {
   const loadMoreRef = useRef<HTMLDivElement>(null)
+  const observerRef = useRef<IntersectionObserver | null>(null)
   const [selectedVoiceId, setSelectedVoiceId] = useState<string>('')
   const [playingVoiceId, setPlayingVoiceId] = useState<string>('')
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -34,24 +35,36 @@ export function VoiceSelectionDialog({ isOpen, onClose, onSelect }: VoiceSelecti
     queryFn: ({ pageParam }) => getVoices({ pageToken: pageParam as string, search: debouncedSearch }),
     getNextPageParam: (lastPage) => lastPage.nextPageToken,
     initialPageParam: undefined,
+    staleTime: 0,
   })
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    // Cleanup previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+
+    // Create new observer
+    observerRef.current = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage()
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, root: null, rootMargin: '50px' }
     )
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current)
+    // Observe the load more element
+    if (loadMoreRef.current && !isLoading) {
+      observerRef.current.observe(loadMoreRef.current)
     }
 
-    return () => observer.disconnect()
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, isLoading])
 
   const allVoices = data?.pages.flatMap((page) => page.voices) || []
   console.log('allVoices :', allVoices)
@@ -108,6 +121,8 @@ export function VoiceSelectionDialog({ isOpen, onClose, onSelect }: VoiceSelecti
           <div>Loading...</div>
         ) : error ? (
           <div>Error: {(error as Error).message}</div>
+        ) : allVoices.length === 0 ? (
+          <div className="py-8 text-center text-subtle">No voices found</div>
         ) : (
           <ScrollArea className="overflow-x-auto max-h-[600px]">
             <div className="space-y-2">
