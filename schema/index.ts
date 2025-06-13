@@ -29,6 +29,7 @@ export const characterSchema = z.object({
   dateOfBirth: z.date({ required_error: 'Date of birth is required' }),
   dateOfDeath: z.date({ required_error: 'Date of death is required' }),
   notableWork: z.string().min(2, { message: 'Notable work must be at least 2 characters.' }),
+  voiceId: z.string().min(1, { message: 'Voice ID is required' }),
 })
 // .refine((data) => data.dateOfDeath > data.dateOfBirth, {
 //   message: 'Date of death must be after date of birth',

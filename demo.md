@@ -1,0 +1,5 @@
+- Call (ask anything)
+- Call Idle state (user not speaking) - AI 3 tries with 15s delay/wait
+- Call buttons 3 badges (ask question, req explanation, topic discussion)
+- Quiz Analytics
+- Mobile responsive

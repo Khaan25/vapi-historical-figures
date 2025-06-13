@@ -25,6 +25,10 @@ export default function ComingSoonPage() {
               <span className="text-primary">•</span>
               <span>Period-appropriate speech patterns</span>
             </li>
+            <li className="flex items-center gap-2">
+              <span className="text-primary">•</span>
+              <span>Add an option to upload custom voices</span>
+            </li>
           </ul>
         </div>
       </div>

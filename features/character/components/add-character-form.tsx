@@ -6,7 +6,7 @@ import { CharacterFormValues, characterSchema } from '@/schema'
 import { categories } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { CalendarIcon, Info, Sparkles } from 'lucide-react'
+import { CalendarIcon, Info, Plus, Sparkles } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -26,9 +26,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { addCharacter, updateCharacterImage } from '../actions'
 import { useWikiData } from '../hooks/use-wiki-data'
 import { NotableWorksDialog } from './notable-works-dialog'
+import { VoiceSelectionDialog } from './voice-selection-dialog'
 
 export function AddCharacterForm() {
   const [isNotableWorksDialogOpen, setIsNotableWorksDialogOpen] = useState(false)
+  const [isVoiceDialogOpen, setIsVoiceDialogOpen] = useState(true)
   const [availableNotableWorks, setAvailableNotableWorks] = useState<string[]>([])
   const { data: wikiData, isLoading: isWikipediaLoading, error: wikipediaError, fetchData: fetchWikipediaData } = useWikiData()
 
@@ -43,6 +45,7 @@ export function AddCharacterForm() {
       notableWork: '',
       bio: '',
       category: undefined,
+      voiceId: '',
     },
   })
 
@@ -142,6 +145,10 @@ export function AddCharacterForm() {
 
   const handleNotableWorksSave = (selectedWorks: string[]) => {
     form.setValue('notableWork', selectedWorks.join(', '))
+  }
+
+  const handleVoiceSelect = (voiceId: string) => {
+    form.setValue('voiceId', voiceId)
   }
 
   async function onSubmit(data: CharacterFormValues) {
@@ -409,7 +416,29 @@ export function AddCharacterForm() {
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="voiceId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Voice</FormLabel>
+              <div className="flex gap-2">
+                <FormControl>
+                  <Input disabled={isSubmitting} placeholder="Select a voice" readOnly className="bg-muted" {...field} />
+                </FormControl>
+                <Button type="button" variant="outline" size="icon" className="shrink-0" onClick={() => setIsVoiceDialogOpen(true)} disabled={isSubmitting}>
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+              <FormDescription>Select a voice for the historical figure</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <NotableWorksDialog isOpen={isNotableWorksDialogOpen} onClose={() => setIsNotableWorksDialogOpen(false)} notableWorks={availableNotableWorks} onSave={handleNotableWorksSave} />
+
+        <VoiceSelectionDialog isOpen={isVoiceDialogOpen} onClose={() => setIsVoiceDialogOpen(false)} onSelect={handleVoiceSelect} />
 
         <Button disabled={isSubmitting} type="submit" className="w-full">
           {isSubmitting ? 'Adding...' : 'Add Historical Figure'}

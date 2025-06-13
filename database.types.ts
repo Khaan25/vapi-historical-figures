@@ -1,10 +1,4 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
   public: {
@@ -45,18 +39,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "feedbacks_quizid_fkey"
-            columns: ["quizId"]
+            foreignKeyName: 'feedbacks_quizid_fkey'
+            columns: ['quizId']
             isOneToOne: false
-            referencedRelation: "quizzes"
-            referencedColumns: ["id"]
+            referencedRelation: 'quizzes'
+            referencedColumns: ['id']
           },
         ]
       }
       historicalFigures: {
         Row: {
           bio: string
-          category: Database["public"]["Enums"]["categories"]
+          category: Database['public']['Enums']['categories']
           createdAt: string
           dateOfBirth: string
           dateOfDeath: string
@@ -65,10 +59,11 @@ export type Database = {
           imageUrl: string
           name: string
           notableWork: string
+          voiceId: string
         }
         Insert: {
           bio: string
-          category: Database["public"]["Enums"]["categories"]
+          category: Database['public']['Enums']['categories']
           createdAt?: string
           dateOfBirth: string
           dateOfDeath: string
@@ -77,10 +72,11 @@ export type Database = {
           imageUrl: string
           name: string
           notableWork: string
+          voiceId: string
         }
         Update: {
           bio?: string
-          category?: Database["public"]["Enums"]["categories"]
+          category?: Database['public']['Enums']['categories']
           createdAt?: string
           dateOfBirth?: string
           dateOfDeath?: string
@@ -89,6 +85,7 @@ export type Database = {
           imageUrl?: string
           name?: string
           notableWork?: string
+          voiceId?: string
         }
         Relationships: []
       }
@@ -119,18 +116,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "quiz_questions_historical_figure_id_fkey"
-            columns: ["historicalFigureId"]
+            foreignKeyName: 'quiz_questions_historical_figure_id_fkey'
+            columns: ['historicalFigureId']
             isOneToOne: false
-            referencedRelation: "historicalFigures"
-            referencedColumns: ["id"]
+            referencedRelation: 'historicalFigures'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "quizQuestions_quizId_fkey"
-            columns: ["quizId"]
+            foreignKeyName: 'quizQuestions_quizId_fkey'
+            columns: ['quizId']
             isOneToOne: false
-            referencedRelation: "quizzes"
-            referencedColumns: ["id"]
+            referencedRelation: 'quizzes'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -139,7 +136,7 @@ export type Database = {
           created_at: string | null
           historicalFigureId: string
           id: string
-          type: Database["public"]["Enums"]["quizType"]
+          type: Database['public']['Enums']['quizType']
           updated_at: string | null
           userId: string
         }
@@ -147,7 +144,7 @@ export type Database = {
           created_at?: string | null
           historicalFigureId: string
           id?: string
-          type: Database["public"]["Enums"]["quizType"]
+          type: Database['public']['Enums']['quizType']
           updated_at?: string | null
           userId: string
         }
@@ -155,17 +152,17 @@ export type Database = {
           created_at?: string | null
           historicalFigureId?: string
           id?: string
-          type?: Database["public"]["Enums"]["quizType"]
+          type?: Database['public']['Enums']['quizType']
           updated_at?: string | null
           userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "quizzes_historicalFigureId_fkey"
-            columns: ["historicalFigureId"]
+            foreignKeyName: 'quizzes_historicalFigureId_fkey'
+            columns: ['historicalFigureId']
             isOneToOne: false
-            referencedRelation: "historicalFigures"
-            referencedColumns: ["id"]
+            referencedRelation: 'historicalFigures'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -177,15 +174,10 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      categories:
-        | "scientists"
-        | "artists"
-        | "philosophers"
-        | "leaders"
-        | "others"
-      difficulty_type: "easy" | "medium" | "hard"
-      mood_type: "positive" | "neutral" | "negative"
-      quizType: "ai" | "manual"
+      categories: 'scientists' | 'artists' | 'philosophers' | 'leaders' | 'others'
+      difficulty_type: 'easy' | 'medium' | 'hard'
+      mood_type: 'positive' | 'neutral' | 'negative'
+      quizType: 'ai' | 'manual'
     }
     CompositeTypes: {
       feedback_category_score: {
@@ -197,29 +189,23 @@ export type Database = {
   }
 }
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DefaultSchema = Database[Extract<keyof Database, 'public'>]
 
 export type Tables<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof Database },
+  DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] & DefaultSchema['Views']) | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof Database
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (Database[DefaultSchemaTableNameOrOptions['schema']]['Tables'] & Database[DefaultSchemaTableNameOrOptions['schema']]['Views'])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+  ? (Database[DefaultSchemaTableNameOrOptions['schema']]['Tables'] & Database[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    ? (DefaultSchema['Tables'] & DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -227,22 +213,20 @@ export type Tables<
     : never
 
 export type TablesInsert<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+  DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables'] | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof Database
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof Database[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? Database[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -250,22 +234,20 @@ export type TablesInsert<
     : never
 
 export type TablesUpdate<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+  DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables'] | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof Database
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof Database[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? Database[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -273,48 +255,38 @@ export type TablesUpdate<
     : never
 
 export type Enums<
-  DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+  DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums'] | { schema: keyof Database },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof Database
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof Database[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+  ? Database[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
+    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
     : never
 
 export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof Database },
+  PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes'] | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof Database
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
+    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
     : never
 
 export const Constants = {
   public: {
     Enums: {
-      categories: [
-        "scientists",
-        "artists",
-        "philosophers",
-        "leaders",
-        "others",
-      ],
-      difficulty_type: ["easy", "medium", "hard"],
-      mood_type: ["positive", "neutral", "negative"],
-      quizType: ["ai", "manual"],
+      categories: ['scientists', 'artists', 'philosophers', 'leaders', 'others'],
+      difficulty_type: ['easy', 'medium', 'hard'],
+      mood_type: ['positive', 'neutral', 'negative'],
+      quizType: ['ai', 'manual'],
     },
   },
 } as const

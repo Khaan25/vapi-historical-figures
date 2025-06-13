@@ -4,6 +4,8 @@ import { CharacterFormValues, characterSchema } from '@/schema'
 import { Category } from '@/types'
 import { createClient } from '@/utils/supabase/server'
 
+import { elevenlabs } from '@/lib/elevenlabs'
+
 export async function addCharacter(data: CharacterFormValues) {
   try {
     // Validate the input data
@@ -23,6 +25,7 @@ export async function addCharacter(data: CharacterFormValues) {
         dateOfBirth: validatedData.dateOfBirth.toISOString(),
         dateOfDeath: validatedData.dateOfDeath.toISOString(),
         notableWork: validatedData.notableWork,
+        voiceId: validatedData.voiceId,
       })
       .select('id')
       .single()
@@ -60,4 +63,17 @@ export const getCharacter = async (id: string) => {
   }
 
   return data
+}
+
+interface GetVoicesParams {
+  pageToken?: string
+  pageSize?: number
+}
+
+export const getVoices = async ({ pageToken, pageSize = 10 }: GetVoicesParams = {}) => {
+  const voices = await elevenlabs.voices.search({
+    nextPageToken: pageToken,
+    pageSize,
+  })
+  return voices
 }
