@@ -37,6 +37,13 @@ export function useVapi({ character, systemPrompt, firstMessage }: UseVapiProps)
         },
       ],
     },
+    messagePlan: {
+      idleMessages: ['If you have a question, feel free to ask', 'Are you there?', 'What are you thinking? I can help you!!', "I'm here whenever you're ready to continue"],
+      idleTimeoutSeconds: 15,
+      idleMessageMaxSpokenCount: 3,
+      idleMessageResetCountOnUserSpeechEnabled: true,
+    },
+    backgroundDenoisingEnabled: true,
     voice: {
       provider: '11labs',
       voiceId: 'rW2lcIFbB5AVdzWcOG9n',
