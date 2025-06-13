@@ -8,6 +8,15 @@ export const metadata: Metadata = {
   description: 'Coming Soon',
 }
 
+const features = [
+  'Unique voice selection for each historical figure',
+  'Adjustable speaking style (casual to formal)',
+  'Tone customization (serious to conversational)',
+  'Period-appropriate speech patterns',
+  'Add an option to upload custom voices',
+  'Automate the process of adding historical figures from Wikipedia',
+]
+
 export default function ComingSoonPage() {
   return (
     <div className="@container/main container mx-auto p-6 space-y-6">
@@ -17,26 +26,12 @@ export default function ComingSoonPage() {
         <div className="bg-card p-6 rounded-lg">
           <h2 className="text-xl font-semibold mb-4">Planned Features:</h2>
           <ul className="text-left space-y-3">
-            <li className="flex items-center gap-2">
-              <span className="text-primary">•</span>
-              <span>Unique voice selection for each historical figure</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">•</span>
-              <span>Adjustable speaking styles (casual to formal)</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">•</span>
-              <span>Tone customization (serious to conversational)</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">•</span>
-              <span>Period-appropriate speech patterns</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-primary">•</span>
-              <span>Add an option to upload custom voices</span>
-            </li>
+            {features.map((feature) => (
+              <li className="flex items-center gap-2" key={feature}>
+                <span className="text-primary">•</span>
+                <span>{feature}</span>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
