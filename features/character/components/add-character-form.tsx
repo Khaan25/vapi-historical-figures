@@ -30,7 +30,7 @@ import { VoiceSelectionDialog } from './voice-selection-dialog'
 
 export function AddCharacterForm() {
   const [isNotableWorksDialogOpen, setIsNotableWorksDialogOpen] = useState(false)
-  const [isVoiceDialogOpen, setIsVoiceDialogOpen] = useState(true)
+  const [isVoiceDialogOpen, setIsVoiceDialogOpen] = useState(false)
   const [availableNotableWorks, setAvailableNotableWorks] = useState<string[]>([])
   const [selectedVoiceName, setSelectedVoiceName] = useState('')
   const { data: wikiData, isLoading: isWikipediaLoading, error: wikipediaError, fetchData: fetchWikipediaData } = useWikiData()
