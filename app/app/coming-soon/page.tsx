@@ -12,6 +12,7 @@ const features = [
   'Adjustable speaking style (casual to formal)',
   'Tone customization (serious to conversational)',
   'Automate the process of adding historical figures from Wikipedia',
+  'Pro account can create custom characters + more talking time',
 ]
 
 export default function ComingSoonPage() {
