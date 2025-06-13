@@ -1,4 +1,4 @@
 export const siteConfig = {
-  name: 'Echoes of the Past',
-  description: 'Chat with the historical figures about the past',
+  name: 'Time Whisper',
+  description: 'Step into the past with AI-driven conversations. TimeWhisper brings legendary historical figures to life through lifelike voice interactions',
 }

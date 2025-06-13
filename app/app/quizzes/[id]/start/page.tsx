@@ -1,11 +1,19 @@
+import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { CallInterface } from '@/features/call/components/call-interface'
 import { Display } from '@/features/call/components/chat-view'
 import { getCharacter } from '@/features/character/actions'
 import { getQuizQuestions } from '@/features/quiz/actions'
 import { createClient } from '@/utils/supabase/server'
 
+import { defaultMetadata } from '@/config/metadata'
 import { generateQuizFirstMessage, generateQuizPrompt } from '@/lib/prompt'
-import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  title: 'Quiz Start',
+  description: 'Quiz Start',
+}
 
 type PageProps = {
   params: Promise<{

@@ -1,12 +1,20 @@
+import { Metadata } from 'next'
 import AuthWrapper from '@/features/auth/components/auth-wrapper'
 import { FormMessage } from '@/features/auth/components/form-message'
 import { SubmitButton } from '@/features/auth/components/submit-button'
 import { MessageParams } from '@/types'
 
+import { defaultMetadata } from '@/config/metadata'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { resetPasswordAction } from '@/app/(other)/auth/actions'
+
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  title: 'Reset Password',
+  description: 'Reset your password',
+}
 
 type ResetPasswordPageProps = {
   searchParams: Promise<MessageParams>

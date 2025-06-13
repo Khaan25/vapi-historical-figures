@@ -1,10 +1,18 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { QuizList } from '@/features/quiz/components/quiz-list'
 import { getQuizzes } from '@/features/quiz/queries'
 
+import { defaultMetadata } from '@/config/metadata'
 import { buttonVariants } from '@/components/ui/button'
 import { Screen } from '@/components/common/screen'
 import { ScreenHeader } from '@/components/common/screen-header'
+
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  title: 'Quizzes',
+  description: 'Quizzes',
+}
 
 export default async function QuizPage() {
   const { data: quizzes, error } = await getQuizzes()

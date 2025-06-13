@@ -1,9 +1,17 @@
+import { Metadata } from 'next'
 import { CallInterface } from '@/features/call/components/call-interface'
 import { Display } from '@/features/call/components/chat-view'
 import { getCharacter } from '@/features/character/actions'
 import { createClient } from '@/utils/supabase/server'
 
+import { defaultMetadata } from '@/config/metadata'
 import { generateCallFirstMessage, generateCallPrompt } from '@/lib/prompt'
+
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  title: 'Call',
+  description: 'Call',
+}
 
 type PageProps = {
   params: Promise<{
