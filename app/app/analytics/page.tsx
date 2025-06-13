@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
+import { AnalyticsCards } from '@/features/analytics/components/analytics-cards'
 import { FeedbackSection } from '@/features/analytics/components/feedback-section'
-import { SectionCards } from '@/features/analytics/components/section-cards'
 import { getHistoricalFiguresWithFeedback } from '@/features/analytics/queries'
 
 export default async function AnalyticsPage() {
@@ -57,7 +57,7 @@ export default async function AnalyticsPage() {
   return (
     <div className="@container/main container mx-auto p-6 space-y-6">
       <Suspense fallback={<div>Loading analytics...</div>}>
-        <SectionCards />
+        <AnalyticsCards />
       </Suspense>
 
       <Suspense fallback={<div>Loading feedback data...</div>}>
