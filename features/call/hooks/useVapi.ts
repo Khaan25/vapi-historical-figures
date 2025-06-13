@@ -46,7 +46,7 @@ export function useVapi({ character, systemPrompt, firstMessage }: UseVapiProps)
     backgroundDenoisingEnabled: true,
     voice: {
       provider: '11labs',
-      voiceId: 'E01VVAfDdpbHObuCs5NH',
+      voiceId: character.voiceId,
       stability: 0.4,
       similarityBoost: 0.8,
       speed: 1,
