@@ -30,6 +30,7 @@ export default function SignInGoogleBtn() {
           toast.error('Error signing in with Google')
         }
 
+        console.log('data.url :', data.url)
         if (data.url) {
           router.push(data.url)
         }
