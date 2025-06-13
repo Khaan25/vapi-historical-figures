@@ -32,6 +32,7 @@ export function AddCharacterForm() {
   const [isNotableWorksDialogOpen, setIsNotableWorksDialogOpen] = useState(false)
   const [isVoiceDialogOpen, setIsVoiceDialogOpen] = useState(true)
   const [availableNotableWorks, setAvailableNotableWorks] = useState<string[]>([])
+  const [selectedVoiceName, setSelectedVoiceName] = useState('')
   const { data: wikiData, isLoading: isWikipediaLoading, error: wikipediaError, fetchData: fetchWikipediaData } = useWikiData()
 
   const form = useForm<CharacterFormValues>({
@@ -147,8 +148,9 @@ export function AddCharacterForm() {
     form.setValue('notableWork', selectedWorks.join(', '))
   }
 
-  const handleVoiceSelect = (voiceId: string) => {
+  const handleVoiceSelect = (voiceId: string, name: string) => {
     form.setValue('voiceId', voiceId)
+    setSelectedVoiceName(name)
   }
 
   async function onSubmit(data: CharacterFormValues) {
@@ -424,13 +426,21 @@ export function AddCharacterForm() {
               <FormLabel>Voice</FormLabel>
               <div className="flex gap-2">
                 <FormControl>
-                  <Input disabled={isSubmitting} placeholder="Select a voice" readOnly className="bg-muted" {...field} />
+                  <Input
+                    {...field}
+                    disabled={isSubmitting}
+                    placeholder="Select a voice"
+                    readOnly
+                    className="bg-muted"
+                    value={selectedVoiceName || 'No voice selected'}
+                    onChange={() => {}} // Read-only field
+                  />
                 </FormControl>
                 <Button type="button" variant="outline" size="icon" className="shrink-0" onClick={() => setIsVoiceDialogOpen(true)} disabled={isSubmitting}>
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
-              <FormDescription>Select a voice for the historical figure</FormDescription>
+              <FormDescription>Select a voice for the character</FormDescription>
               <FormMessage />
             </FormItem>
           )}

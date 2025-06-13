@@ -2,8 +2,9 @@
 
 import { Voice } from '@elevenlabs/elevenlabs-js/api'
 import Avatar from 'boring-avatars'
-import { CirclePlus, MoreHorizontal, Pause, Play } from 'lucide-react'
+import { Pause, Play } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
 type VoiceListItemProps = {
@@ -15,10 +16,12 @@ type VoiceListItemProps = {
 }
 
 export const VoiceListItem = ({ voice, selectedVoiceId, setSelectedVoiceId, handlePlayPreview, playingVoiceId }: VoiceListItemProps) => {
+  const isSelected = selectedVoiceId === voice.voiceId
+
   return (
     <div
       key={voice.voiceId}
-      className={`w-full flex items-center gap-3 p-3 hover:bg-gray-alpha-50 rounded-lg cursor-pointer ${selectedVoiceId === voice.voiceId ? 'bg-gray-alpha-50' : ''}`}
+      className={cn(`w-full flex items-center gap-3 p-3 hover:bg-gray-alpha-50 rounded-lg cursor-pointer`, isSelected && 'bg-accent')}
       onClick={() => setSelectedVoiceId(voice.voiceId)}
     >
       <div className="relative flex items-center justify-center bg-transparent size-10 my-1 rounded-full">
@@ -50,7 +53,7 @@ export const VoiceListItem = ({ voice, selectedVoiceId, setSelectedVoiceId, hand
           {voice.labels?.accent && voice.labels.language && (
             <div className="hidden md:block">
               <div className="text-sm flex items-center gap-2">
-                <img src={`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${voice.labels.language}.svg`} alt={voice.labels.accent} width={14} height={14} className="rounded-full" />
+                {/* <img src={`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${voice.labels.language}.svg`} alt={voice.labels.accent} width={14} height={14} className="rounded-full" /> */}
                 <span>{voice.labels.language?.toUpperCase()}</span>
                 <span className="text-gray-alpha-600">•</span>
                 <span className="text-gray-alpha-600 capitalize">{voice.labels.accent}</span>
@@ -62,35 +65,6 @@ export const VoiceListItem = ({ voice, selectedVoiceId, setSelectedVoiceId, hand
           <div className="hidden lg:block">
             <p className="text-sm truncate capitalize">{voice.labels?.useCase?.replace('_', ' ')}</p>
           </div>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="flex items-center gap-4 max-lg:hidden">
-        <p className="text-sm text-subtle w-8 text-right capitalize">{voice.labels?.age?.replace('_', ' ')}</p>
-        <div className="flex gap-1">
-          <Button
-            size="icon"
-            variant="ghost"
-            className="w-8 h-8"
-            onClick={(e) => {
-              e.stopPropagation()
-              // Handle add to voices
-            }}
-          >
-            <CirclePlus className="h-4 w-4" />
-          </Button>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="w-8 h-8"
-            onClick={(e) => {
-              e.stopPropagation()
-              // Handle more options
-            }}
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
         </div>
       </div>
     </div>

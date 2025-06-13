@@ -68,12 +68,14 @@ export const getCharacter = async (id: string) => {
 interface GetVoicesParams {
   pageToken?: string
   pageSize?: number
+  search?: string
 }
 
-export const getVoices = async ({ pageToken, pageSize = 10 }: GetVoicesParams = {}) => {
+export const getVoices = async ({ pageToken, pageSize = 10, search }: GetVoicesParams = {}) => {
   const voices = await elevenlabs.voices.search({
     nextPageToken: pageToken,
     pageSize,
+    search,
   })
   return voices
 }
