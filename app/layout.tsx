@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils'
 
 import './globals.css'
 
+import { Analytics } from '@vercel/analytics/next'
+
 import { Toaster } from '@/components/ui/sonner'
 import { ReactQueryProvider } from '@/components/react-query-provider'
 
@@ -34,6 +36,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           {children}
           <Toaster richColors theme="system" />
+          <Analytics />
         </ReactQueryProvider>
       </body>
     </html>
