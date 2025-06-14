@@ -6,6 +6,7 @@ import { HistoricalFigure } from '@/types'
 import { createClient } from '@/utils/supabase/server'
 
 import { openai } from '@/lib/ai'
+import redis from '@/lib/redis'
 
 /**
  *
@@ -140,6 +141,29 @@ export const getQuizQuestions = async (id: string) => {
 }
 
 export const generateQuizQuestions = async (figure: HistoricalFigure, difficulty: string) => {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return {
+      data: null,
+      error: 'User not found',
+    }
+  }
+
+  // Rate limit to 10 questions per day
+  const rateLimit = await redis.incr(`quiz-rate-limit:${user.id}`)
+
+  if (rateLimit > 10) {
+    return {
+      data: null,
+      error: 'You have reached the maximum number of questions per day',
+    }
+  }
+
   const prompt = `Generate 5 questions about ${figure.name} (${figure.category}) at a ${difficulty} difficulty level.
 Use the following information about the historical figure:
 - Bio: ${figure.bio}

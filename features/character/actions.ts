@@ -5,6 +5,7 @@ import { Category } from '@/types'
 import { createClient } from '@/utils/supabase/server'
 
 import { elevenlabs } from '@/lib/elevenlabs'
+import redis from '@/lib/redis'
 
 export async function addCharacter(data: CharacterFormValues) {
   try {
@@ -13,6 +14,20 @@ export async function addCharacter(data: CharacterFormValues) {
 
     // Create Supabase client
     const supabase = await createClient()
+
+    const { data: user, error: userError } = await supabase.auth.getUser()
+
+    if (userError) {
+      throw new Error(userError.message)
+    }
+
+    // Rate limit to 10 characters per day
+    const rateLimit = await redis.incr(`character-rate-limit:${user.user.id}`)
+
+    if (rateLimit > 10) {
+      throw new Error('You have reached the maximum number of characters per day')
+    }
+
     // Insert the data into Supabase
     const { data: character, error } = await supabase
       .from('historicalFigures')

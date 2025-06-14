@@ -1,9 +1,34 @@
 import { feedbackSchema } from '@/schema'
+import { createClient } from '@/utils/supabase/server'
 
 import { Message, MessageTypeEnum, TranscriptMessage } from '@/types/conversation.type'
 import { openai } from '@/lib/ai'
+import redis from '@/lib/redis'
 
 export const generateFeedback = async (messages: Message[]) => {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return {
+      data: null,
+      error: 'User not found',
+    }
+  }
+
+  // Rate limit to 10 feedback per day
+  const rateLimit = await redis.incr(`feedback-rate-limit:${user.id}`)
+
+  if (rateLimit > 10) {
+    return {
+      data: null,
+      error: 'You have reached the maximum number of feedback per day',
+    }
+  }
+
   // Format messages for OpenAI
   const formattedTranscript = messages
     .filter((msg): msg is TranscriptMessage => msg.type === MessageTypeEnum.TRANSCRIPT)
