@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default async function QuizPage({ params, searchParams }: QuizPageProps) {
   const { id } = await params
-  const { type, difficulty } = await searchParams
+  const { type } = await searchParams
 
   const supabase = await createClient()
 
@@ -39,9 +39,9 @@ export default async function QuizPage({ params, searchParams }: QuizPageProps) 
 
   return (
     <Screen>
-      <ScreenHeader title={`Quiz: ${figure.name}`} description={type === 'ai' ? `AI-generated ${difficulty} quiz about ${figure.name}` : `Add questions to test knowledge about ${figure.name}`} />
+      <ScreenHeader title={`Quiz: ${figure.name}`} description={type === 'ai' ? `AI-generated quiz about ${figure.name}` : `Add questions to test knowledge about ${figure.name}`} />
 
-      {type === 'ai' ? <AIQuiz figure={figure} difficulty={difficulty || 'medium'} /> : <ManualQuiz figure={figure} />}
+      {type === 'ai' ? <AIQuiz figure={figure} /> : <ManualQuiz figure={figure} />}
     </Screen>
   )
 }

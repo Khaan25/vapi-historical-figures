@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { CharacterFormValues, characterSchema } from '@/schema'
 import { categories } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,6 +35,8 @@ export function AddCharacterForm() {
   const [availableNotableWorks, setAvailableNotableWorks] = useState<string[]>([])
   const [selectedVoiceName, setSelectedVoiceName] = useState('')
   const { data: wikiData, isLoading: isWikipediaLoading, error: wikipediaError, fetchData: fetchWikipediaData } = useWikiData()
+
+  const router = useRouter()
 
   const form = useForm<CharacterFormValues>({
     resolver: zodResolver(characterSchema),
@@ -193,6 +196,8 @@ export function AddCharacterForm() {
       if (avatarSrc) {
         URL.revokeObjectURL(avatarSrc as string)
       }
+
+      router.push('/app')
     } catch (error) {
       console.error('Error submitting form:', error)
       toast.error('Failed to add historical figure. Please try again.')
