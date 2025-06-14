@@ -53,7 +53,7 @@ export const FeedbackList = ({ feedbacks, selectedFeedbackId, setSelectedFeedbac
                     selectedFeedbackId === feedback.feedbackId ? 'ring-primary' : 'ring-border group-hover:ring-primary'
                   )}
                 >
-                  <AvatarImage src={feedback.figure.imageUrl} alt={feedback.figure.name} />
+                  <AvatarImage className="object-cover object-top" src={feedback.figure.imageUrl} alt={feedback.figure.name} />
                   <AvatarFallback>{feedback.figure.name[0]}</AvatarFallback>
                 </Avatar>
                 <Badge className={`${badge.className} absolute -bottom-2 -right-2 size-6 rounded-full flex items-center justify-center p-0 text-xs font-bold shadow-lg`}>{feedback.totalScore}</Badge>

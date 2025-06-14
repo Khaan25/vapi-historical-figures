@@ -29,7 +29,7 @@ export function FeedbackCard({ feedback }: FeedbackCardProps) {
     <div className={cn('w-full space-y-6')}>
       <div className="flex items-center space-x-4 bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-lg">
         <Avatar className="size-16 ring-2 ring-offset-2 ring-offset-background ring-primary">
-          <AvatarImage src={feedback.figure.imageUrl} alt={feedback.figure.name} />
+          <AvatarImage className="object-cover object-top" src={feedback.figure.imageUrl} alt={feedback.figure.name} />
           <AvatarFallback>{feedback.figure.name[0]}</AvatarFallback>
         </Avatar>
 
@@ -68,12 +68,19 @@ export function FeedbackCard({ feedback }: FeedbackCardProps) {
                   <AccordionTrigger className="px-4 py-1.5 hover:no-underline [&[data-state=open]>div]:text-primary">
                     <div className="flex items-center justify-between w-full transition-colors">
                       <span className="font-medium">{category.name}</span>
-                      <Badge variant="default" className={cn("ml-auto text-black",
-                        category.score >= 90 ? "text-white bg-green-500 hover:bg-green-600" :
-                        category.score >= 80 ? "text-white bg-yellow-500 hover:bg-yellow-600" :
-                        category.score >= 50 ? "text-white bg-orange-500 hover:bg-orange-600" :
-                        "bg-red-500 hover:bg-red-600 text-white"
-                      )}>
+                      <Badge
+                        variant="default"
+                        className={cn(
+                          'ml-auto text-black',
+                          category.score >= 90
+                            ? 'text-white bg-green-500 hover:bg-green-600'
+                            : category.score >= 80
+                              ? 'text-white bg-yellow-500 hover:bg-yellow-600'
+                              : category.score >= 50
+                                ? 'text-white bg-orange-500 hover:bg-orange-600'
+                                : 'bg-red-500 hover:bg-red-600 text-white'
+                        )}
+                      >
                         {category.score}%
                       </Badge>
                     </div>
