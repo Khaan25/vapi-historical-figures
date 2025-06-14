@@ -9,6 +9,7 @@ import { Analytics } from '@vercel/analytics/next'
 
 import { Toaster } from '@/components/ui/sonner'
 import { ReactQueryProvider } from '@/components/react-query-provider'
+import Script from 'next/script'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -38,6 +39,8 @@ export default function RootLayout({
           <Toaster richColors theme="system" />
           <Analytics />
         </ReactQueryProvider>
+
+        {process.env.NODE_ENV === 'production' && <Script defer src="https://cloud.umami.is/script.js" data-website-id="e2be9698-2b5e-432b-b846-a02a0a9b7733" />}
       </body>
     </html>
   )
