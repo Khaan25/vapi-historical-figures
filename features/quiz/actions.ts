@@ -179,7 +179,6 @@ Format the response as a JSON object with a "questions" array containing the que
   })
 
   const response = completion.choices[0].message.content
-  console.log('response :', response)
 
   if (!response) {
     return {
